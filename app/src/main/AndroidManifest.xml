@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cssweb.walletaphone" >
 
+    <!-- 权限设置 -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.NFC" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -15,6 +20,66 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".quote.ZxgActivity"
+            android:label="@string/title_activity_zxg" >
+        </activity>
+        <activity
+            android:name=".service.TestServiceActivity"
+            android:label="@string/title_activity_test_service" >
+        </activity>
+
+        <!-- 本地服务 -->
+        <service
+            android:name=".service.MyService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
+
+        <!-- 进程间服务 -->
+        <service
+            android:name=".service.aidl.MyRemoteService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":remote" >
+            <intent-filter>
+                <action android:name="com.cssweb.walletaphone.service.aidl.IMyAidlInterface" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name=".broadcast.MyReceiver"
+            android:enabled="true"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.cssweb.walletaphone.broadcast.custom_msg" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".broadcast.TestBroadcastActivity"
+            android:label="@string/title_activity_test_broadcast" >
+        </activity>
+        <activity
+            android:name=".web.WebviewActivity"
+            android:label="@string/title_activity_webview" >
+        </activity>
+        <activity
+            android:name=".nfc.ReadYktActivity"
+            android:label="@string/title_activity_read_ykt" >
+        </activity>
+        <activity
+            android:name=".nfc.ReadNFCTagActivity"
+            android:label="@string/title_activity_read_nfctag" >
+        </activity>
+        <activity
+            android:name=".nfc.WriteNFCTagActivity"
+            android:label="@string/title_activity_write_nfctag" >
+        </activity>
+        <activity
+            android:name=".nfc.TestAppletActivity"
+            android:label="@string/title_activity_test_applet" >
         </activity>
     </application>
 
