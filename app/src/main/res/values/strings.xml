@@ -12,5 +12,6 @@
     <string name="title_activity_read_nfctag">ReadNFCTagActivity</string>
     <string name="title_activity_write_nfctag">WriteNFCTagActivity</string>
     <string name="title_activity_test_applet">TestAppletActivity</string>
+    <string name="title_activity_hce">模拟HCE</string>
 
 </resources>
