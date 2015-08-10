@@ -1,4 +1,4 @@
-package com.cssweb.walletaphone.web;
+package com.cssweb.walletaphone.webview;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;

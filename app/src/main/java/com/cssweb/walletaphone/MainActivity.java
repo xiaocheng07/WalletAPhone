@@ -1,51 +1,72 @@
 package com.cssweb.walletaphone;
 
-import android.app.Activity;
+
+
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
 import android.os.Parcelable;
-import android.support.v7.app.ActionBarActivity;
+
 import android.os.Bundle;
+
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cssweb.walletaphone.broadcast.TestBroadcastActivity;
 import com.cssweb.walletaphone.contentprovider.contract.AccessContract;
+import com.cssweb.walletaphone.fortune.FortuneFragment;
+import com.cssweb.walletaphone.merchant.MerchantFragment;
 import com.cssweb.walletaphone.nfc.ReadNFCTagActivity;
 import com.cssweb.walletaphone.nfc.ReadYktActivity;
 import com.cssweb.walletaphone.nfc.TestAppletActivity;
 import com.cssweb.walletaphone.nfc.WriteNFCTagActivity;
-import com.cssweb.walletaphone.quote.ZxgActivity;
 import com.cssweb.walletaphone.service.TestServiceActivity;
-import com.cssweb.walletaphone.web.WebviewActivity;
+import com.cssweb.walletaphone.wallet.WalletFragment;
+import com.cssweb.walletaphone.webview.WebviewActivity;
+import com.squareup.okhttp.OkHttpClient;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
    private static final String LOG_TAG = "main";
 
+   // private final OkHttpClient client = new OkHttpClient();
 
-    private EditText editUserName;
+  //  private EditText editUserName;
 
-    private NfcAdapter nfcAdapter = null;
-    private PendingIntent pendingIntent = null;
+   // private NfcAdapter nfcAdapter = null;
+  ///  private PendingIntent pendingIntent = null;
+
+
+
+    private RelativeLayout rlWallet, rlMerchant, rlFortune;
+    private ImageView ivWallet, ivMerchant, ivFortune;
+    private TextView tvWallet, tvMerchant, tvFortune;
+    private Fragment fmWallet, fmMerchant, fmFortune;
+    private Fragment currentFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main_activity);
 
+        initTab();
+
+
+      //  tvLog = (TextView) findViewById(R.id.tvLog);
+       // R.style.The
+/*
         editUserName = (EditText)findViewById(R.id.editUserName);
         editUserName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -62,11 +83,148 @@ public class MainActivity extends ActionBarActivity {
 
             }
         });
-
-        checkNFC();
+*/
+     //   checkNFC();
         //  initNFC();
     }
 
+    private void initTab() {
+        rlWallet = (RelativeLayout) findViewById(R.id.rlWallet);
+        rlMerchant = (RelativeLayout) findViewById(R.id.rlMerchant);
+        rlFortune = (RelativeLayout) findViewById(R.id.rlFortune);
+
+        rlWallet.setOnClickListener(this);
+        rlMerchant.setOnClickListener(this);
+        rlFortune.setOnClickListener(this);
+
+        ivWallet = (ImageView) findViewById(R.id.ivWallet);
+        ivMerchant = (ImageView) findViewById(R.id.ivMerchant);
+        ivFortune = (ImageView) findViewById(R.id.ivFortune);
+
+        tvWallet = (TextView) findViewById(R.id.tvWallet);
+        tvMerchant = (TextView) findViewById(R.id.tvMerchant);
+        tvFortune = (TextView) findViewById(R.id.tvFortune);
+
+       fmWallet = new WalletFragment();
+        fmMerchant = new MerchantFragment();
+        fmFortune = new FortuneFragment();
+       // fmWallet = getSupportFragmentManager().findFragmentById(R.id.WalletFragment);
+       // fmMerchant = getSupportFragmentManager().findFragmentById(R.id.MerchantFragment);
+       // fmFortune = getSupportFragmentManager().findFragmentById(R.id.FortuneFragment);
+
+        getSupportFragmentManager().beginTransaction().add(R.id.ContentFrameLayout, fmWallet).commit();
+        currentFragment = fmWallet;
+
+        ivWallet.setImageResource(R.drawable.btn_wallet_press);
+      //  tvWallet.setTextColor(getResources().getColor(R.color.bottomtab_press));
+
+        ivMerchant.setImageResource(R.drawable.btn_merchant_nor);
+       // tvMerchant.setTextColor(getResources().getColor(R.color.bottomtab_normal));
+
+        ivFortune.setImageResource(R.drawable.btn_fortune_nor);
+   //     tvFortune.setTextColor(getResources().getColor(R.color.bottomtab_normal));
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.rlWallet:
+                switchTab(1);
+                break;
+            case R.id.rlMerchant:
+                switchTab(2);
+                break;
+            case R.id.rlFortune:
+                switchTab(3);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void switchTab(int tabId)
+    {
+
+        if (tabId == 1)
+        {
+            if (currentFragment == fmWallet)
+                return;
+
+            if (!fmWallet.isAdded())
+            {
+                getSupportFragmentManager().beginTransaction().hide(currentFragment).add(R.id.ContentFrameLayout, fmWallet).commit();
+            }
+            else
+            {
+                getSupportFragmentManager().beginTransaction().hide(currentFragment).show(fmWallet).commit();
+            }
+
+            currentFragment = fmWallet;
+
+            ivWallet.setImageResource(R.drawable.btn_wallet_press);
+            //tvWallet.setTextColor(getResources().getColor(R.color.bottomtab_press));
+
+            ivMerchant.setImageResource(R.drawable.btn_merchant_nor);
+            //tvMerchant.setTextColor(getResources().getColor(R.color.bottomtab_normal));
+
+            ivFortune.setImageResource(R.drawable.btn_fortune_nor);
+            //tvFortune.setTextColor(getResources().getColor(R.color.bottomtab_normal));
+        }
+        else if(tabId == 2)
+        {
+            if (currentFragment == fmMerchant)
+                return;
+
+            if (!fmMerchant.isAdded())
+            {
+                getSupportFragmentManager().beginTransaction().hide(currentFragment).add(R.id.ContentFrameLayout, fmMerchant).commit();
+            }
+            else
+            {
+                getSupportFragmentManager().beginTransaction().hide(currentFragment).show(fmMerchant).commit();
+            }
+
+            currentFragment = fmMerchant;
+
+            ivWallet.setImageResource(R.drawable.btn_wallet_nor);
+            //tvWallet.setTextColor(getResources().getColor(R.color.bottomtab_normal));
+
+            ivMerchant.setImageResource(R.drawable.btn_merchant_press);
+            //tvMerchant.setTextColor(getResources().getColor(R.color.bottomtab_press));
+
+            ivFortune.setImageResource(R.drawable.btn_fortune_nor);
+            //tvFortune.setTextColor(getResources().getColor(R.color.bottomtab_normal));
+        }
+        else if(tabId == 3)
+        {
+            if (currentFragment == fmFortune)
+                return;
+
+            if (!fmFortune.isAdded())
+            {
+                getSupportFragmentManager().beginTransaction().hide(currentFragment).add(R.id.ContentFrameLayout, fmFortune).commit();
+            }
+            else
+            {
+                getSupportFragmentManager().beginTransaction().hide(currentFragment).show(fmFortune).commit();
+            }
+
+            currentFragment = fmFortune;
+
+            ivWallet.setImageResource(R.drawable.btn_wallet_nor);
+            //tvWallet.setTextColor(getResources().getColor(R.color.bottomtab_normal));
+
+            ivMerchant.setImageResource(R.drawable.btn_merchant_nor);
+            //tvMerchant.setTextColor(getResources().getColor(R.color.bottomtab_normal));
+
+            ivFortune.setImageResource(R.drawable.btn_fortune_press);
+           // tvFortune.setTextColor(getResources().getColor(R.color.bottomtab_press));
+        }
+        else
+        {
+            return;
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -139,7 +297,7 @@ public class MainActivity extends ActionBarActivity {
         startActivity(intent);
     }
 
-
+/*
     @Override
     protected void onResume()
     {
@@ -193,10 +351,10 @@ public class MainActivity extends ActionBarActivity {
         super.onPause();
         disableForegroundDispatch();
     }
-
+*/
     /**
      *
-     */
+
     private void enableForegroundDispatch()
     {
         if (nfcAdapter != null)
@@ -205,9 +363,7 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    /**
-     *
-     */
+
     private void disableForegroundDispatch()
     {
         if (nfcAdapter != null)
@@ -216,10 +372,7 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    /**
-     *
-     * @return
-     */
+
     private boolean checkNFC()
     {
         boolean ret;
@@ -245,12 +398,72 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-    /**
-     *
-     */
+
     private void initNFC()
     {
         pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+    }
+    */
+    public void btnDownloadFile(View view)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Dialog");
+        builder.setMessage("少数派客户端");
+        builder.setPositiveButton("OK", null);
+        builder.setNegativeButton("Cancel", null);
+        builder.show();
+
+        /*
+        Request request = new Request.Builder()
+              //  .url("http://192.168.1.9:8080/resume/myself.html")
+                .url("http://192.168.1.9:8080/resume/我的照片.jpg")
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+
+
+            @Override
+            public void onFailure(Request request, IOException e) {
+                Log.i("http onFailure。。。。。", e.toString());
+            }
+
+            @Override
+            public void onResponse(Response response) {
+                if (!response.isSuccessful())
+                {
+                   Log.i("http。。。。。。。。。。。。。。", "downlowd error");
+
+                    return;
+                }
+
+
+                try {
+                    byte[] content = response.body().bytes();
+                    Log.i("http。。。。。。。。。。。。。", "内容大小" + content.length);
+
+                    File fileDir = getFilesDir();
+
+                    File file = new File(fileDir, "我的照片.jpg");
+                    file.createNewFile();
+
+                    FileOutputStream out = new FileOutputStream(file.getAbsolutePath());
+                    out.write(content);
+                    out.flush();
+                    out.close();
+
+
+                    Log.i("http。。。。。。。。。。。。。。。。。", "downlowd success");
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+
+                    Log.i("http。。。。。。。。。。。。。。。。", "downlowd exception");
+                }
+
+                //  System.out.println(response.body().string());
+            }
+        });
+        */
     }
 
 }

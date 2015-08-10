@@ -26,7 +26,7 @@ public class AccessContract {
                 String contactId = cursor.getString(idColumn);
                 //获取联系人姓名
                 String disPlayName = cursor.getString(displayNameColumn);
-                //Toast.makeText(MainActivity.this, "联系人姓名：" + disPlayName, Toast.LENGTH_LONG).show();
+                //Toast.makeText(main_activity.this, "联系人姓名：" + disPlayName, Toast.LENGTH_LONG).show();
                 int phoneCount = cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
                 if (phoneCount > 0) {
                     Cursor phonesCursor = resolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
@@ -34,7 +34,7 @@ public class AccessContract {
                     if (phonesCursor.moveToFirst()) {
                         do {
                             String phoneNumber = phonesCursor.getString(phonesCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                            //Toast.makeText(MainActivity.this, "联系人电话：" + phoneNumber, Toast.LENGTH_LONG).show();
+                            //Toast.makeText(main_activity.this, "联系人电话：" + phoneNumber, Toast.LENGTH_LONG).show();
                             Log.d("test", "phoneNumber is " + phoneNumber);
                         }
                         while (phonesCursor.moveToNext());
