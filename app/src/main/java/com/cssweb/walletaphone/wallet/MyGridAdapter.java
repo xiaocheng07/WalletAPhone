@@ -17,7 +17,7 @@ import com.cssweb.walletaphone.ui.BaseViewHolder;
 public class MyGridAdapter extends BaseAdapter {
 	private Context context;
 
-	public String[] img_text = { "转账", "余额宝", "手机充值", "信用卡还款", "淘宝电影", "彩票",			"当面付", "亲密付", "机票", };
+	public String[] img_text = { "webview", "余额宝", "手机充值", "信用卡还款", "淘宝电影", "彩票",			"当面付", "亲密付", "机票", };
 
 	public int[] imgs = { R.drawable.app_transfer, R.drawable.app_fund,
 			R.drawable.app_phonecharge, R.drawable.app_creditcard,
