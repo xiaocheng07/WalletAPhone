@@ -14,6 +14,7 @@ public class MAC {
 
 
     /**
+     * 银联算法
      * @param MAK
      * @param src
      * @return
@@ -107,14 +108,131 @@ public class MAC {
     }
 
 
-    public static byte[] calcMAC(byte[] key, byte[] iv, byte[] data)
+    /**
+     * PBOC-DES-MAC算法
+     * @param key
+     * @param iv
+     * @param src
+     * @return
+     */
+    public static byte[] calcMAC1(byte[] key, byte[] iv, byte[] src)
     {
         //http://blog.csdn.net/yxstars/article/details/38456657
+//http://www.cnblogs.com/xianlg/p/4683221.html
 
+        int x = src.length % 8;
+
+        int addLen = 8;
+
+        if (x != 0) {
+            addLen = 8 - x;
+        }
+
+
+        byte[] add = new byte[addLen];
+        for (int i=0; i<addLen; i++)
+        {
+            if (i==0)
+                add[i] = (byte)0x80;
+            else
+                add[i] = (byte)0x00;
+        }
+
+        byte[] data = new byte[src.length + addLen];
+        System.arraycopy(src, 0, data, 0, src.length);
+        System.arraycopy(add, 0, data, src.length, addLen);
+
+        //System.out.println("data=" + Hex.encodeHexString(data).toUpperCase());
+
+        int pos = 0;
+        byte[] block1 = new byte[8];
+        System.arraycopy(data, pos, block1, 0, 8);
+        pos += 8;
+
+        byte[] input = XOR.bytesXOR(iv, block1);
+
+        byte[] output = new byte[8];
+        output = DES.encrypt(key, input);
+
+
+        int count = data.length/8;
+        for (int i=1; i<count; i++)
+        {
+            byte[] block = new byte[8];
+            System.arraycopy(data, pos, block, 0, 8);
+            pos += 8;
+
+            // 存放异或结果
+            input = XOR.bytesXOR(output, block);
+
+            output = DES.encrypt(key, input);
+        }
+
+
+        // left 4 bytes
         byte[] mac = new byte[4];
+        //System.out.println("output=" + Hex.encodeHexString(output).toUpperCase());
+        System.arraycopy(output, 0, mac, 0, 4);
         return mac;
     }
 
+    public static byte[] calcMAC1_3DES(byte[] key, byte[] iv, byte[] src)
+    {
+        int x = src.length % 8;
+
+        int addLen = 8;
+
+        if (x != 0) {
+            addLen = 8 - x;
+        }
+
+
+        byte[] add = new byte[addLen];
+        for (int i=0; i<addLen; i++)
+        {
+            if (i==0)
+                add[i] = (byte)0x80;
+            else
+                add[i] = (byte)0x00;
+        }
+
+        byte[] data = new byte[src.length + addLen];
+        System.arraycopy(src, 0, data, 0, src.length);
+        System.arraycopy(add, 0, data, src.length, addLen);
+
+        //System.out.println("data=" + Hex.encodeHexString(data).toUpperCase());
+
+        int pos = 0;
+        byte[] block1 = new byte[8];
+        System.arraycopy(data, pos, block1, 0, 8);
+        pos += 8;
+
+        byte[] input = XOR.bytesXOR(iv, block1);
+
+        byte[] output = new byte[8];
+        output = DES.encrypt(key, input);
+
+
+        int count = data.length/8;
+        for (int i=1; i<count; i++)
+        {
+            byte[] block = new byte[8];
+            System.arraycopy(data, pos, block, 0, 8);
+            pos += 8;
+
+            // 存放异或结果
+            input = XOR.bytesXOR(output, block);
+
+            output = DES.encrypt(key, input);
+        }
+
+
+        // left 4 bytes
+        byte[] mac = new byte[4];
+        //System.out.println("output=" + Hex.encodeHexString(output).toUpperCase());
+        System.arraycopy(output, 0, mac, 0, 4);
+        return mac;
+    }
 
     public static void main(String[] args) throws NoSuchProviderException, NoSuchAlgorithmException {
 
@@ -130,5 +248,16 @@ public class MAC {
         System.out.println("mac长度=" + mac.length);
 
         System.out.println("mac=" + Hex.encodeHexString(mac).toUpperCase());
+
+        byte[] iv = new byte[8];
+        /*
+        for (int i=0; i<iv.length; i++)
+        {
+            iv[i] = (byte)0x00;
+        }
+        */
+
+        byte[] mac1 = MAC.calcMAC1(key.getBytes(), iv, data.getBytes());
+        System.out.println("mac1=" + Hex.encodeHexString(mac1).toUpperCase());
     }
 }

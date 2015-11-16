@@ -106,38 +106,36 @@ public class DES {
      *
      * @param key
      * @param src
-     * @return public byte[] decrypt(byte[] key, byte[] src)
+     * */
+    public static byte[] decrypt(byte[] key, byte[] src)
     {
-    SecureRandom sr = new SecureRandom();
 
-    try {
-    Key k = toKey(key);
+        try
+        {
+
+            Key k = toKey(key);
+            Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
 
 
-    Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM, "BC");
+            cipher.init(Cipher.DECRYPT_MODE, k);
 
-    //cipher.init(Cipher.DECRYPT_MODE, securekey, sr);
-    cipher.init(Cipher.DECRYPT_MODE, k);
+            return cipher.doFinal(src);
 
-    return cipher.doFinal(src);
+        } catch (NoSuchAlgorithmException e) {
+        e.printStackTrace();
+        } catch (InvalidKeyException e) {
+        e.printStackTrace();
+        }  catch (NoSuchPaddingException e) {
+        e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+        e.printStackTrace();
+        } catch (BadPaddingException e) {
+        e.printStackTrace();
+        }
 
-    } catch (NoSuchAlgorithmException e) {
-    e.printStackTrace();
-    } catch (InvalidKeyException e) {
-    e.printStackTrace();
-    }  catch (NoSuchPaddingException e) {
-    e.printStackTrace();
-    } catch (IllegalBlockSizeException e) {
-    e.printStackTrace();
-    } catch (BadPaddingException e) {
-    e.printStackTrace();
-    } catch (NoSuchProviderException e) {
-    e.printStackTrace();
+        return null;
     }
 
-    return null;
-    }
-     */
 
     public static void main(String[] args)
     {
@@ -153,5 +151,8 @@ public class DES {
         System.out.println("加密结果长度= " + encryptData.length);
 
         System.out.println("加密结果= " + Hex.encodeHexString(encryptData).toUpperCase());
+
+        byte[] decryptData = DES.decrypt(key.getBytes(), encryptData);
+        System.out.println("解密结果= " + Hex.encodeHexString(decryptData).toUpperCase());
     }
 }

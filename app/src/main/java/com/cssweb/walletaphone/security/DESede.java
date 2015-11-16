@@ -48,6 +48,9 @@ public class DESede {
 
             // 参考http://blog.163.com/11_gying/blog/static/4067301220136176054973/
 
+            if (key.length != 16)
+                return null;
+
             byte[] newKey = new byte[24];
 
             System.arraycopy(key, 0, newKey, 0, 16);
@@ -104,21 +107,20 @@ public class DESede {
         return null;
     }
 
-    /**
-     *
-     * @param key
-     * @param src
-     * @return public byte[] decrypt(byte[] key, byte[] src)
+
+    public static byte[] decrypt(byte[] key, byte[] src)
     {
-    SecureRandom sr = new SecureRandom();
 
     try {
-    Key k = toKey(key);
+        if (key.length != 16)
+            return null;
+
+        Key k = toKey(key);
 
 
-    Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM, "BC");
+    Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
 
-    //cipher.init(Cipher.DECRYPT_MODE, securekey, sr);
+
     cipher.init(Cipher.DECRYPT_MODE, k);
 
     return cipher.doFinal(src);
@@ -133,22 +135,20 @@ public class DESede {
     e.printStackTrace();
     } catch (BadPaddingException e) {
     e.printStackTrace();
-    } catch (NoSuchProviderException e) {
-    e.printStackTrace();
     }
 
     return null;
     }
-     */
+
 
     public static void main(String[] args)
     {
 
         String key = "1234567812345678";
-        System.out.println("测试工具用编码key=" + Hex.encodeHexString(key.getBytes()));
+        System.out.println("测试工具用编码key=" + Hex.encodeHexString(key.getBytes())); // 输出结果输入测试工具
 
-        String data = "1234567812345678";
-        System.out.println("测试工具用编码data=" + Hex.encodeHexString(data.getBytes()));
+        String data = "ABCDEFGH";
+        System.out.println("测试工具用编码data=" + Hex.encodeHexString(data.getBytes()));// 输出结果输入测试工具
 
 
 
@@ -156,5 +156,8 @@ public class DESede {
         System.out.println("加密结果长度= " + encryptData.length);
 
         System.out.println("加密结果= " + Hex.encodeHexString(encryptData).toUpperCase());
+
+        byte[] decryptData = DESede.decrypt(key.getBytes(), encryptData);
+        System.out.println("解密结果= " + Hex.encodeHexString(decryptData).toUpperCase());
     }
 }
