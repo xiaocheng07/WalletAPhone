@@ -178,6 +178,12 @@ public class MAC {
 
     public static byte[] calcMAC1_3DES(byte[] key, byte[] iv, byte[] src)
     {
+        if (key.length != 16)
+            return null;
+
+      //  if (iv.length != 16)
+       //     return null;
+
         int x = src.length % 8;
 
         int addLen = 8;
@@ -210,7 +216,7 @@ public class MAC {
         byte[] input = XOR.bytesXOR(iv, block1);
 
         byte[] output = new byte[8];
-        output = DES.encrypt(key, input);
+        output = DESede.encrypt(key, input);
 
 
         int count = data.length/8;
@@ -223,13 +229,13 @@ public class MAC {
             // 存放异或结果
             input = XOR.bytesXOR(output, block);
 
-            output = DES.encrypt(key, input);
+            output = DESede.encrypt(key, input);
         }
 
 
         // left 4 bytes
         byte[] mac = new byte[4];
-        //System.out.println("output=" + Hex.encodeHexString(output).toUpperCase());
+        System.out.println("3des output=" + Hex.encodeHexString(output).toUpperCase());
         System.arraycopy(output, 0, mac, 0, 4);
         return mac;
     }
@@ -259,5 +265,12 @@ public class MAC {
 
         byte[] mac1 = MAC.calcMAC1(key.getBytes(), iv, data.getBytes());
         System.out.println("mac1=" + Hex.encodeHexString(mac1).toUpperCase());
+
+        String key2 = "1234567812345678";
+        System.out.println("输入密钥=" + Hex.encodeHexString(key2.getBytes()));
+        byte[] iv2 = new byte[8];
+        byte[] mac2 = MAC.calcMAC1_3DES(key2.getBytes(), iv2, data.getBytes());
+        System.out.println("3mac = " + Hex.encodeHexString(mac2).toUpperCase());
+
     }
 }

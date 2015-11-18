@@ -84,6 +84,9 @@ public class DESede {
      * @return
      */
     public static byte[] encrypt(byte[] key, byte[] src) {
+        if (key.length != 16)
+            return null;
+
         try {
             Key k = toKey(key);
 
