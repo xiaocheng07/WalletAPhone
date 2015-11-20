@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,10 +27,15 @@ import java.util.List;
  * Created by chenhf on 2015/8/7.
  */
 public class WalletFragment extends Fragment {
+
+
+    private static final String LOG_TAG = "WalletFragment";
+
     private AliPayGridView gvMenu;
+    List<GridViewItem> gvItems = new ArrayList<GridViewItem>();
 
     ViewPager viewPager;
-    List<View> pageViews = new ArrayList<View>();
+    ArrayList<View> pageViews = new ArrayList<View>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,21 +59,54 @@ public class WalletFragment extends Fragment {
 
     private void initGridView()
     {
+        gvItems.add(new GridViewItem(0, "NFC",R.drawable.app_transfer));
+        gvItems.add(new GridViewItem(1, "余额宝",R.drawable.app_fund));
+        gvItems.add(new GridViewItem(2, "手机充值",R.drawable.app_phonecharge));
+        gvItems.add(new GridViewItem(3, "信用卡还款",R.drawable.app_creditcard));
+        gvItems.add(new GridViewItem(4, "淘宝电影",R.drawable.app_movie));
+        gvItems.add(new GridViewItem(5, "彩票",R.drawable.app_lottery));
+        gvItems.add(new GridViewItem(6, "当面付",R.drawable.app_facepay));
+        gvItems.add(new GridViewItem(7, "亲密付",R.drawable.app_close));
+        gvItems.add(new GridViewItem(8, "机票",R.drawable.app_plane));
+
         // 九宫格菜单, 注意在Fragment中使用getView()和getActivity()
         gvMenu = (AliPayGridView) (getView().findViewById(R.id.gvMenu));
         gvMenu.setAdapter(new GridViewAdapter(getActivity()));
         gvMenu.setOnItemClickListener(new ItemClickListener());
+
+
+    }
+
+    class GridViewItem
+    {
+        int id;
+        String text;
+        int imageResId;
+
+        public GridViewItem(int id, String text, int imageResId)
+        {
+            this.id = id;
+            this.text = text;
+            this.imageResId = imageResId;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public String getText() {
+            return text;
+        }
+
+        public int getImageResId() {
+            return imageResId;
+        }
     }
 
     class GridViewAdapter extends BaseAdapter {
         private Context context;
 
-        public String[] img_text = {"webview", "余额宝", "手机充值", "信用卡还款", "淘宝电影", "彩票", "当面付", "亲密付", "机票",};
 
-        public int[] imgs = {R.drawable.app_transfer, R.drawable.app_fund,
-                R.drawable.app_phonecharge, R.drawable.app_creditcard,
-                R.drawable.app_movie, R.drawable.app_lottery,
-                R.drawable.app_facepay, R.drawable.app_close, R.drawable.app_plane};
 
         public GridViewAdapter(Context context) {
             super();
@@ -77,7 +116,7 @@ public class WalletFragment extends Fragment {
         @Override
         public int getCount() {
 
-            return img_text.length;
+            return gvItems.size();
         }
 
         @Override
@@ -101,8 +140,9 @@ public class WalletFragment extends Fragment {
             TextView tv = BaseViewHolder.get(convertView, R.id.tvGridItem);
             ImageView iv = BaseViewHolder.get(convertView, R.id.ivGridItem);
 
-            iv.setBackgroundResource(imgs[position]);
-            tv.setText(img_text[position]);
+            GridViewItem item = gvItems.get(position);
+            iv.setBackgroundResource(item.getImageResId());
+            tv.setText(item.getText());
 
             return convertView;
         }
@@ -117,6 +157,11 @@ public class WalletFragment extends Fragment {
             //view The view within the AdapterView that was clicked
             //i The position of the view in the adapter
             //l he row id of the item that was clicked
+            Log.d(LOG_TAG, "i=" + i);
+            Log.d(LOG_TAG, "l=" + l);
+
+            GridViewItem gvItem = gvItems.get(i);
+            Log.d(LOG_TAG, "item id=" + gvItem.getId());
 
         }
     }
