@@ -2,6 +2,7 @@ package com.cssweb.walletaphone.webview;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebSettings;
@@ -9,7 +10,7 @@ import android.webkit.WebView;
 
 import com.cssweb.walletaphone.R;
 
-public class WebviewActivity extends ActionBarActivity {
+public class WebviewActivity extends AppCompatActivity {
 
     private WebView webView;
 

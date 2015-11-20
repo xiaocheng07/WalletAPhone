@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.cssweb.walletaphone" >
+    package="com.cssweb.walletaphone">
 
     <uses-library
         android:name="org.simalliance.openmobileapi"
@@ -15,18 +15,21 @@
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="org.simalliance.openmobileapi.SMARTCARD" />
 
-<!--     <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" /> -->
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <!-- <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" /> -->
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:name=".main.MainActivity"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
@@ -52,26 +55,23 @@
         </activity>
         <activity
             android:name=".quote.ZxgActivity"
-            android:label="@string/title_activity_zxg" >
-        </activity>
+            android:label="@string/title_activity_zxg"></activity>
         <activity
             android:name=".service.TestServiceActivity"
-            android:label="@string/title_activity_test_service" >
-        </activity>
+            android:label="@string/title_activity_test_service"></activity>
 
         <!-- 本地服务 -->
         <service
             android:name=".service.MyService"
             android:enabled="true"
-            android:exported="true" >
-        </service>
+            android:exported="true"></service>
 
         <!-- 进程间服务 -->
         <service
             android:name=".service.aidl.MyRemoteService"
             android:enabled="true"
             android:exported="true"
-            android:process=":remote" >
+            android:process=":remote">
             <intent-filter>
                 <action android:name="com.cssweb.walletaphone.service.aidl.IMyAidlInterface" />
             </intent-filter>
@@ -80,7 +80,7 @@
         <receiver
             android:name=".broadcast.MyReceiver"
             android:enabled="true"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.cssweb.walletaphone.broadcast.custom_msg" />
             </intent-filter>
@@ -88,32 +88,28 @@
 
         <activity
             android:name=".broadcast.TestBroadcastActivity"
-            android:label="@string/title_activity_test_broadcast" >
-        </activity>
+            android:label="@string/title_activity_test_broadcast"></activity>
         <activity
             android:name=".webview.WebviewActivity"
-            android:label="@string/title_activity_webview" >
-        </activity>
+            android:label="@string/title_activity_webview"></activity>
         <activity
             android:name=".nfc.ReadYktActivity"
-            android:label="@string/title_activity_read_ykt" >
-        </activity>
+            android:label="@string/title_activity_read_ykt"></activity>
         <activity
             android:name=".nfc.ReadNFCTagActivity"
-            android:label="@string/title_activity_read_nfctag" >
-        </activity>
+            android:label="@string/title_activity_read_nfctag"></activity>
         <activity
             android:name=".nfc.WriteNFCTagActivity"
-            android:label="@string/title_activity_write_nfctag" >
-        </activity>
+            android:label="@string/title_activity_write_nfctag"></activity>
         <activity
             android:name=".nfc.TestAppletActivity"
-            android:label="@string/title_activity_test_applet" >
-        </activity>
+            android:label="@string/title_activity_test_applet"></activity>
         <activity
             android:name=".nfc.HCEActivity"
-            android:label="@string/title_activity_hce" >
-        </activity>
+            android:label="@string/title_activity_hce"></activity>
+        <activity
+            android:name=".login.LoginActivity"
+            android:label="@string/title_activity_login"></activity>
     </application>
 
 </manifest>

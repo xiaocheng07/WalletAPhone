@@ -4,6 +4,7 @@
     android:orientation="vertical" >
 
 
+    <!---->
     <FrameLayout
         android:id="@+id/ContentFrameLayout"
         android:layout_width="match_parent"
@@ -11,6 +12,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_weight="10">
     </FrameLayout>
+
     <!--
        <fragment
            android:id="@+id/WalletFragment"
@@ -23,7 +25,7 @@
        <fragment
            android:id="@+id/MerchantFragment"
            xmlns:tools="http://schemas.android.com/tools"
-           android:name="com.cssweb.walletaphone.merchant.MerchantFragment"
+           android:name="com.cssweb.walletaphone.main.MerchantFragment"
            android:layout_width="match_parent"
            android:layout_height="match_parent"
            tools:layout="@layout/merchant_fragment"
@@ -31,7 +33,7 @@
        <fragment
            android:id="@+id/FortuneFragment"
            xmlns:tools="http://schemas.android.com/tools"
-           android:name="com.cssweb.walletaphone.fortune.FortuneFragment"
+           android:name="com.cssweb.walletaphone.main.FortuneFragment"
            android:layout_width="match_parent"
            android:layout_height="match_parent"
            tools:layout="@layout/fortune_fragment"

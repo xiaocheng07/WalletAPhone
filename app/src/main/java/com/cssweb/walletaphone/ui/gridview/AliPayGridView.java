@@ -1,4 +1,4 @@
-package com.cssweb.walletaphone.ui;
+package com.cssweb.walletaphone.ui.gridview;
 
 import android.content.Context;
 import android.util.AttributeSet;

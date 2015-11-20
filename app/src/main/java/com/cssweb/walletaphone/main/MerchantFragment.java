@@ -1,4 +1,4 @@
-package com.cssweb.walletaphone.fortune;
+package com.cssweb.walletaphone.main;
 
 
 import android.os.Bundle;
@@ -12,10 +12,10 @@ import com.cssweb.walletaphone.R;
 /**
  * Created by chenhf on 2015/8/7.
  */
-public class FortuneFragment extends Fragment {
+public class MerchantFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fortune_fragment, container, false);
+        return inflater.inflate(R.layout.merchant_fragment, container, false);
     }
 }

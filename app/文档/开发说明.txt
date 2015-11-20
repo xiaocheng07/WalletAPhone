@@ -1,8 +1,24 @@
 NFC
 
+日志
+
+崩溃处理
+
 android webview
 
 android 插件
 
 
-android MVP
+android MVP & loginActivity
+
+图像处理
+
+jni
+
+二维码扫描
+
+银行卡扫描
+
+百度地图
+
+OpenCV

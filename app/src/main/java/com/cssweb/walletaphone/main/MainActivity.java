@@ -1,32 +1,23 @@
-package com.cssweb.walletaphone;
+package com.cssweb.walletaphone.main;
 
 
 
-import android.app.PendingIntent;
 import android.content.Intent;
-import android.nfc.NdefMessage;
-import android.nfc.NfcAdapter;
-import android.os.Parcelable;
 
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.cssweb.walletaphone.R;
 import com.cssweb.walletaphone.broadcast.TestBroadcastActivity;
 import com.cssweb.walletaphone.contentprovider.contract.AccessContract;
-import com.cssweb.walletaphone.fortune.FortuneFragment;
-import com.cssweb.walletaphone.merchant.MerchantFragment;
 import com.cssweb.walletaphone.nfc.ReadNFCTagActivity;
 import com.cssweb.walletaphone.nfc.ReadYktActivity;
 import com.cssweb.walletaphone.nfc.TestAppletActivity;
@@ -34,15 +25,14 @@ import com.cssweb.walletaphone.nfc.WriteNFCTagActivity;
 import com.cssweb.walletaphone.service.TestServiceActivity;
 import com.cssweb.walletaphone.wallet.WalletFragment;
 import com.cssweb.walletaphone.webview.WebviewActivity;
-import com.squareup.okhttp.OkHttpClient;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-   private static final String LOG_TAG = "main";
+   private static final String LOG_TAG = "MainActivity";
 
    // private final OkHttpClient client = new OkHttpClient();
 
-  //  private EditText editUserName;
+
 
    // private NfcAdapter nfcAdapter = null;
   ///  private PendingIntent pendingIntent = null;
@@ -52,20 +42,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RelativeLayout rlWallet, rlMerchant, rlFortune;
     private ImageView ivWallet, ivMerchant, ivFortune;
     private TextView tvWallet, tvMerchant, tvFortune;
-    private Fragment fmWallet, fmMerchant, fmFortune;
-    private Fragment currentFragment;
+    private Fragment currentFragment, fmWallet, fmMerchant, fmFortune;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.main_activity);
 
         initTab();
 
 
-      //  tvLog = (TextView) findViewById(R.id.tvLog);
-       // R.style.The
 /*
         editUserName = (EditText)findViewById(R.id.editUserName);
         editUserName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -105,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tvMerchant = (TextView) findViewById(R.id.tvMerchant);
         tvFortune = (TextView) findViewById(R.id.tvFortune);
 
-       fmWallet = new WalletFragment();
+        fmWallet = new WalletFragment();
         fmMerchant = new MerchantFragment();
         fmFortune = new FortuneFragment();
        // fmWallet = getSupportFragmentManager().findFragmentById(R.id.WalletFragment);
@@ -248,54 +237,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
-    public void btnServiceOnClick(View view)
-    {
-        Intent intent = new Intent(this, TestServiceActivity.class);
-        startActivity(intent);
-    }
 
-    public void btnContentProviderOnClick(View view)
-    {
-        AccessContract accessContract = new AccessContract();
-        accessContract.accessContract(this);
-
-    }
-
-    public void btnBroadcastOnClick(View view)
-    {
-        Intent intent = new Intent(this, TestBroadcastActivity.class);
-        startActivity(intent);
-    }
-
-    public void btnWebviewOnClick(View view)
-    {
-        Intent intent = new Intent(this, WebviewActivity.class);
-        startActivity(intent);
-    }
-
-    public void btnTestAppletOnClick(View view)
-    {
-        Intent intent = new Intent(this, TestAppletActivity.class);
-        startActivity(intent);
-    }
-
-    public void btnReadNFCTagOnClick(View view)
-    {
-        Intent intent = new Intent(this, ReadNFCTagActivity.class);
-        startActivity(intent);
-    }
-
-    public void btnWriteNFCTagOnClick(View view)
-    {
-        Intent intent = new Intent(this, WriteNFCTagActivity.class);
-        startActivity(intent);
-    }
-
-    public void btnReadYktOnClick(View view)
-    {
-        Intent intent = new Intent(this, ReadYktActivity.class);
-        startActivity(intent);
-    }
 
 /*
     @Override
@@ -404,6 +346,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
     }
     */
+    /*
     public void btnDownloadFile(View view)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -413,7 +356,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         builder.setNegativeButton("Cancel", null);
         builder.show();
 
-        /*
+
         Request request = new Request.Builder()
               //  .url("http://192.168.1.9:8080/resume/myself.html")
                 .url("http://192.168.1.9:8080/resume/我的照片.jpg")
@@ -463,7 +406,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //  System.out.println(response.body().string());
             }
         });
-        */
-    }
+
+    }*/
 
 }

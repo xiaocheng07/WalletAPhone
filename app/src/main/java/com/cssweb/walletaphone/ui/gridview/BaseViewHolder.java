@@ -1,4 +1,4 @@
-package com.cssweb.walletaphone.ui;
+package com.cssweb.walletaphone.ui.gridview;
 
 import android.util.SparseArray;
 import android.view.View;
