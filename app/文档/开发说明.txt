@@ -1,1 +1,8 @@
-需要放到/system/app下面运行,测试一下小米3
+NFC
+
+android webview
+
+android 插件
+
+
+android MVP
