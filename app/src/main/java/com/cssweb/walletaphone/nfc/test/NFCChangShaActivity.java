@@ -1,6 +1,5 @@
-package com.cssweb.walletaphone.nfc;
+package com.cssweb.walletaphone.nfc.test;
 
-import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -10,11 +9,18 @@ import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -22,22 +28,54 @@ import com.cssweb.walletaphone.R;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class WriteNFCTagActivity extends ActionBarActivity {
-    private NfcAdapter nfcAdapter;
-    private PendingIntent pendingIntent;
-    IntentFilter writeTagFilters[];
-    boolean writeMode;
-    Tag mytag;
+public class NFCChangShaActivity extends AppCompatActivity {
+   // private NfcAdapter nfcAdapter;
+    //private PendingIntent pendingIntent;
+  //  IntentFilter writeTagFilters[];
+//    boolean writeMode;
+//    Tag mytag;
 
-    private EditText etMsg;
+ //   private EditText etMsg;
+
+    private ViewPager mViewPager;
+    ArrayList<View> pageViews = new ArrayList<View>();
+    List<String> titleList = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_write_nfctag);
+        setContentView(R.layout.nfcchangsha_activity);
 
-        etMsg = (EditText) findViewById(R.id.editText);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
+        LayoutInflater layoutInFlater = LayoutInflater.from(this);
+        pageViews.add(layoutInFlater.inflate(R.layout.nfcchangsha_cardinfo_fragment, null));
+        pageViews.add(layoutInFlater.inflate(R.layout.nfcchangsha_purchase_fragment, null));
+        pageViews.add(layoutInFlater.inflate(R.layout.nfcchangsha_charge_fragment, null));
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(pageViews);
+
+
+
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(viewPagerAdapter);
+
+
+
+        titleList.add("卡信息");
+        titleList.add("消费");
+        titleList.add("充值");
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
+        tabLayout.setTabsFromPagerAdapter(viewPagerAdapter);
+
+
+        /*
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
@@ -46,10 +84,11 @@ public class WriteNFCTagActivity extends ActionBarActivity {
         tagDetected.addCategory(Intent.CATEGORY_DEFAULT);
 
         writeTagFilters = new IntentFilter[] { tagDetected };
+        */
 
     }
 
-
+/*
     public void btnWriteOnClick(View view)
     {
         try {
@@ -68,6 +107,7 @@ public class WriteNFCTagActivity extends ActionBarActivity {
             e.printStackTrace();
         }
     }
+    */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -91,7 +131,7 @@ public class WriteNFCTagActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
+/*
     private void write(String text, Tag tag) throws IOException, FormatException {
         // Get an instance of Ndef for the tag.
         Ndef ndef = Ndef.get(tag);
@@ -159,5 +199,44 @@ public class WriteNFCTagActivity extends ActionBarActivity {
     private void WriteModeOff(){
         writeMode = false;
         nfcAdapter.disableForegroundDispatch(this);
+    }
+    */
+
+    class ViewPagerAdapter extends PagerAdapter
+    {
+        private List<View> mViewList;
+
+        public ViewPagerAdapter(List<View> mViewList)
+        {
+            this.mViewList = mViewList;
+        }
+
+        @Override
+        public int getCount() {
+            return mViewList.size();
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == object;
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position)
+        {
+            container.addView(mViewList.get(position));//添加页卡
+
+            return mViewList.get(position);
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            container.removeView(mViewList.get(position));//删除页卡
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return titleList.get(position);//页卡标题
+        }
     }
 }

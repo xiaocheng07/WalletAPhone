@@ -1,4 +1,4 @@
-package com.cssweb.walletaphone.nfc;
+package com.cssweb.walletaphone.nfc.oma;
 
 import android.nfc.NfcAdapter;
 import android.support.v7.app.ActionBarActivity;

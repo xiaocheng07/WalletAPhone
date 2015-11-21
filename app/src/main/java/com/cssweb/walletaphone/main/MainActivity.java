@@ -2,8 +2,6 @@ package com.cssweb.walletaphone.main;
 
 
 
-import android.content.Intent;
-
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
@@ -16,15 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cssweb.walletaphone.R;
-import com.cssweb.walletaphone.broadcast.TestBroadcastActivity;
-import com.cssweb.walletaphone.contentprovider.contract.AccessContract;
-import com.cssweb.walletaphone.nfc.ReadNFCTagActivity;
-import com.cssweb.walletaphone.nfc.ReadYktActivity;
-import com.cssweb.walletaphone.nfc.TestAppletActivity;
-import com.cssweb.walletaphone.nfc.WriteNFCTagActivity;
-import com.cssweb.walletaphone.service.TestServiceActivity;
 import com.cssweb.walletaphone.wallet.WalletFragment;
-import com.cssweb.walletaphone.webview.WebviewActivity;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {

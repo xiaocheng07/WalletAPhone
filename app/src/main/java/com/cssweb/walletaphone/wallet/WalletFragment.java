@@ -2,6 +2,7 @@ package com.cssweb.walletaphone.wallet;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cssweb.walletaphone.R;
+import com.cssweb.walletaphone.nfc.test.NFCChangShaActivity;
 import com.cssweb.walletaphone.ui.gridview.AliPayGridView;
 import com.cssweb.walletaphone.ui.gridview.BaseViewHolder;
 
@@ -162,6 +164,13 @@ public class WalletFragment extends Fragment {
 
             GridViewItem gvItem = gvItems.get(i);
             Log.d(LOG_TAG, "item id=" + gvItem.getId());
+
+            if (gvItem.getId() == 0)
+            {
+
+                Intent intent = new Intent(getActivity(), NFCChangShaActivity.class);
+                startActivity(intent);
+            }
 
         }
     }
