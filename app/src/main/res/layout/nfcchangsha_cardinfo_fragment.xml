@@ -5,11 +5,10 @@
     android:layout_height="match_parent"
     tools:context="com.cssweb.walletaphone.nfc.test.CardInfoFragment" >
 
-    <TextView
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="CardInfoFragment"
-        android:id="@+id/textView2"
+        android:text="余额"
+        android:id="@+id/btnGetBalance"
         android:layout_gravity="center_horizontal" />
 </LinearLayout>

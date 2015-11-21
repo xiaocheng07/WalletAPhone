@@ -10,16 +10,20 @@
         android:required="true" />
 
     <!-- 权限设置 -->
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.INTERNET" />
+
     <uses-permission android:name="android.permission.NFC" />
+    <uses-feature android:name="android.hardware.nfc" android:required="true" />
+
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="org.simalliance.openmobileapi.SMARTCARD" />
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
-
     <!-- <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" /> -->
+    <!--end-->
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -36,7 +40,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <!-- 读NFC Tag -->
+            <intent-filter>
+                <action android:name="android.nfc.action.TECH_DISCOVERED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.nfc.action.TECH_DISCOVERED"
+                android:resource="@xml/nfc_tech_filter" />
+
+            <!-- 读NFC Tag
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
 
@@ -44,11 +55,8 @@
 
                 <data android:mimeType="text/plain" />
             </intent-filter>
-            <!--
-            <intent-filter>
-                <action android:name="android.nfc.action.TECH_DISCOVERED" />
-            </intent-filter>
-            <meta-data android:name="android.nfc.action.TECH_DISCOVERED" android:resource="@xml/nfc_tech_filter"/>
+
+
 
             <intent-filter>
                 <action android:name="android.nfc.action.TAG_DISCOVERED" />
@@ -60,9 +68,12 @@
         <activity
             android:name=".nfc.test.NFCChangShaActivity"
             android:label="长沙卡测试"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
 
-
+        <activity
+            android:name=".login.LoginActivity"
+            android:label="@string/title_activity_login" />
 
 
 
@@ -105,21 +116,12 @@
         <activity
             android:name=".webview.WebviewActivity"
             android:label="@string/title_activity_webview" />
-        <activity
-            android:name=".nfc.ReadYktActivity"
-            android:label="@string/title_activity_read_ykt" />
 
 
         <activity
             android:name=".nfc.oma.TestAppletActivity"
             android:label="@string/title_activity_test_applet" />
-        <activity
-            android:name=".login.LoginActivity"
-            android:label="@string/title_activity_login" />
-        <activity
-            android:name=".nfc.test.TmpActivity"
-            android:label="@string/title_activity_tmp"
-            android:theme="@style/AppTheme"></activity>
+
     </application>
 
 </manifest>

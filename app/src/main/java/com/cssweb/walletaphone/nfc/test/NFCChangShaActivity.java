@@ -1,5 +1,6 @@
 package com.cssweb.walletaphone.nfc.test;
 
+
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -10,6 +11,9 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
@@ -39,10 +43,16 @@ public class NFCChangShaActivity extends AppCompatActivity {
 //    Tag mytag;
 
  //   private EditText etMsg;
+     List<String> titleList = new ArrayList<String>();
 
     private ViewPager mViewPager;
-    ArrayList<View> pageViews = new ArrayList<View>();
-    List<String> titleList = new ArrayList<String>();
+    ArrayList<Fragment> pageViews = new ArrayList<Fragment>();
+    CardInfoFragment cardInfoFragment;
+    PurchaseFragment purchaseFragment;
+    ChargeFragment chargeFragment;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +62,20 @@ public class NFCChangShaActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+/*
         LayoutInflater layoutInFlater = LayoutInflater.from(this);
         pageViews.add(layoutInFlater.inflate(R.layout.nfcchangsha_cardinfo_fragment, null));
         pageViews.add(layoutInFlater.inflate(R.layout.nfcchangsha_purchase_fragment, null));
         pageViews.add(layoutInFlater.inflate(R.layout.nfcchangsha_charge_fragment, null));
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(pageViews);
+        */
+        cardInfoFragment = new CardInfoFragment();
+        purchaseFragment = new PurchaseFragment();
+        chargeFragment = new ChargeFragment();
+        pageViews.add(cardInfoFragment);
+        pageViews.add(purchaseFragment);
+        pageViews.add(chargeFragment);
+
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
 
 
@@ -72,7 +90,7 @@ public class NFCChangShaActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-        tabLayout.setTabsFromPagerAdapter(viewPagerAdapter);
+        //tabLayout.setTabsFromPagerAdapter(viewPagerAdapter);
 
 
         /*
@@ -87,27 +105,6 @@ public class NFCChangShaActivity extends AppCompatActivity {
         */
 
     }
-
-/*
-    public void btnWriteOnClick(View view)
-    {
-        try {
-            if(mytag == null){
-                Toast.makeText(this, "检测到tag ", Toast.LENGTH_LONG ).show();
-            }else{
-                write(etMsg.getText().toString(), mytag);
-
-                Toast.makeText(this, "写入tag ", Toast.LENGTH_LONG ).show();
-            }
-        } catch (IOException e) {
-            Toast.makeText(this, "写tag失败", Toast.LENGTH_LONG ).show();
-            e.printStackTrace();
-        } catch (FormatException e) {
-            Toast.makeText(this, "写tag失败" , Toast.LENGTH_LONG ).show();
-            e.printStackTrace();
-        }
-    }
-    */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -130,6 +127,75 @@ public class NFCChangShaActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    class ViewPagerAdapter extends FragmentStatePagerAdapter
+    {
+
+        public ViewPagerAdapter(FragmentManager fm)
+        {
+            super(fm);
+
+
+        }
+
+        @Override
+        public int getCount() {
+            return pageViews.size();
+        }
+
+
+
+        @Override
+        public Fragment getItem(int position) {
+            return pageViews.get(position);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return titleList.get(position);//页卡标题
+        }
+/*
+ @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == object;
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position)
+        {
+            container.addView(pageViews.get(position));//添加页卡
+
+            return pageViews.get(position);
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            container.removeView(pageViews.get(position));//删除页卡
+        }*/
+
+
+    }
+/*
+    public void btnWriteOnClick(View view)
+    {
+        try {
+            if(mytag == null){
+                Toast.makeText(this, "检测到tag ", Toast.LENGTH_LONG ).show();
+            }else{
+                write(etMsg.getText().toString(), mytag);
+
+                Toast.makeText(this, "写入tag ", Toast.LENGTH_LONG ).show();
+            }
+        } catch (IOException e) {
+            Toast.makeText(this, "写tag失败", Toast.LENGTH_LONG ).show();
+            e.printStackTrace();
+        } catch (FormatException e) {
+            Toast.makeText(this, "写tag失败" , Toast.LENGTH_LONG ).show();
+            e.printStackTrace();
+        }
+    }
+    */
+
 
 /*
     private void write(String text, Tag tag) throws IOException, FormatException {
@@ -202,41 +268,4 @@ public class NFCChangShaActivity extends AppCompatActivity {
     }
     */
 
-    class ViewPagerAdapter extends PagerAdapter
-    {
-        private List<View> mViewList;
-
-        public ViewPagerAdapter(List<View> mViewList)
-        {
-            this.mViewList = mViewList;
-        }
-
-        @Override
-        public int getCount() {
-            return mViewList.size();
-        }
-
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view == object;
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position)
-        {
-            container.addView(mViewList.get(position));//添加页卡
-
-            return mViewList.get(position);
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView(mViewList.get(position));//删除页卡
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return titleList.get(position);//页卡标题
-        }
-    }
 }
