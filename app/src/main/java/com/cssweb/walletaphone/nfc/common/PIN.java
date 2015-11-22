@@ -1,4 +1,4 @@
-package com.cssweb.walletaphone.security;
+package com.cssweb.walletaphone.nfc.common;
 
 import org.apache.commons.codec.binary.Hex;
 

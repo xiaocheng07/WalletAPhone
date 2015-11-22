@@ -1,10 +1,10 @@
-package com.cssweb.walletaphone.security;
+package com.cssweb.walletaphone.nfc.common;
 
 
 import org.apache.commons.codec.binary.Hex;
 
 import javax.crypto.*;
-import javax.crypto.spec.DESKeySpec;
+import javax.crypto.spec.DESedeKeySpec;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
@@ -14,11 +14,12 @@ import java.security.spec.InvalidKeySpecException;
 /**
  * Created by chenhf on 2014/11/11.
  */
-public class DES {
+public class DESede {
 
-    private static final String KEY_ALGORITHM = "DES";
-    private static final String CIPHER_ALGORITHM = "DES/ECB/NoPadding";
 
+
+    private static final  String KEY_ALGORITHM = "DESede";
+    private static final  String CIPHER_ALGORITHM = "DESede/ECB/NoPadding";
 
 
     /**
@@ -45,15 +46,20 @@ public class DES {
     private static Key toKey(byte[] key) {
         try {
 
+            // 参考http://blog.163.com/11_gying/blog/static/4067301220136176054973/
 
+            if (key.length != 16)
+                return null;
+
+            byte[] newKey = new byte[24];
+
+            System.arraycopy(key, 0, newKey, 0, 16);
+            System.arraycopy(key, 0, newKey, 16, 8);
+
+            DESedeKeySpec dks = new DESedeKeySpec(newKey);
             SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(KEY_ALGORITHM);
 
 
-
-            //DESedeKeySpec dks = new DESedeKeySpec(Key);
-            //SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(KEY_ALGORITHM);
-
-            DESKeySpec dks = new DESKeySpec(key);
             SecretKey securekey = keyFactory.generateSecret(dks);
 
             return securekey;
@@ -78,6 +84,9 @@ public class DES {
      * @return
      */
     public static byte[] encrypt(byte[] key, byte[] src) {
+        if (key.length != 16)
+            return null;
+
         try {
             Key k = toKey(key);
 
@@ -98,61 +107,60 @@ public class DES {
         } catch (InvalidKeyException e1) {
             e1.printStackTrace();
         }
-
         return null;
     }
 
-    /**
-     *
-     * @param key
-     * @param src
-     * */
+
     public static byte[] decrypt(byte[] key, byte[] src)
     {
 
-        try
-        {
+    try {
+        if (key.length != 16)
+            return null;
 
-            Key k = toKey(key);
-            Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
+        Key k = toKey(key);
 
 
-            cipher.init(Cipher.DECRYPT_MODE, k);
+    Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
 
-            return cipher.doFinal(src);
 
-        } catch (NoSuchAlgorithmException e) {
-        e.printStackTrace();
-        } catch (InvalidKeyException e) {
-        e.printStackTrace();
-        }  catch (NoSuchPaddingException e) {
-        e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-        e.printStackTrace();
-        } catch (BadPaddingException e) {
-        e.printStackTrace();
-        }
+    cipher.init(Cipher.DECRYPT_MODE, k);
 
-        return null;
+    return cipher.doFinal(src);
+
+    } catch (NoSuchAlgorithmException e) {
+    e.printStackTrace();
+    } catch (InvalidKeyException e) {
+    e.printStackTrace();
+    }  catch (NoSuchPaddingException e) {
+    e.printStackTrace();
+    } catch (IllegalBlockSizeException e) {
+    e.printStackTrace();
+    } catch (BadPaddingException e) {
+    e.printStackTrace();
+    }
+
+    return null;
     }
 
 
     public static void main(String[] args)
     {
-        String key = "12345678";
-        System.out.println("key测试工具用编码=" + Hex.encodeHexString(key.getBytes()));//16进制输出，输入测试工具
+
+        String key = "1234567812345678";
+        System.out.println("测试工具用编码key=" + Hex.encodeHexString(key.getBytes())); // 输出结果输入测试工具
 
         String data = "ABCDEFGH";
-        System.out.println("data测试工具用编码=" + Hex.encodeHexString(data.getBytes()));//16进制输出，输入测试工具
+        System.out.println("测试工具用编码data=" + Hex.encodeHexString(data.getBytes()));// 输出结果输入测试工具
 
 
 
-        byte[] encryptData = DES.encrypt(key.getBytes(), data.getBytes());
+        byte[] encryptData = DESede.encrypt(key.getBytes(), data.getBytes());
         System.out.println("加密结果长度= " + encryptData.length);
 
         System.out.println("加密结果= " + Hex.encodeHexString(encryptData).toUpperCase());
 
-        byte[] decryptData = DES.decrypt(key.getBytes(), encryptData);
+        byte[] decryptData = DESede.decrypt(key.getBytes(), encryptData);
         System.out.println("解密结果= " + Hex.encodeHexString(decryptData).toUpperCase());
     }
 }

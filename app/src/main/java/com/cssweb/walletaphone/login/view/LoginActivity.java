@@ -1,4 +1,4 @@
-package com.cssweb.walletaphone.login;
+package com.cssweb.walletaphone.login.view;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -27,52 +27,43 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.cssweb.walletaphone.R;
+import com.cssweb.walletaphone.login.presenter.ILoginPresenter;
+import com.cssweb.walletaphone.login.presenter.LoginPresenterImpl;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
-/**
- * A login screen that offers login via email/password.
- */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
-    /**
-     * Id to identity READ_CONTACTS permission request.
-     */
-    private static final int REQUEST_READ_CONTACTS = 0;
+public class LoginActivity extends AppCompatActivity implements ILoginView{
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask mAuthTask = null;
 
-    // UI references.
-    private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
+
+
+    private AutoCompleteTextView etUsername;
+    private EditText etPassword;
+    private ProgressBar pbProgress;
+    Button bLoginSubmit;
+    private View vLoginForm;
+    ILoginPresenter loginPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
-        // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        populateAutoComplete();
 
-        mPasswordView = (EditText) findViewById(R.id.password);
+        etUsername = (AutoCompleteTextView) findViewById(R.id.username);
+        etPassword = (EditText) findViewById(R.id.password);
+        vLoginForm = findViewById(R.id.loginForm);
+        pbProgress = (ProgressBar) findViewById(R.id.loginProgress);
+
+        /*
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -83,19 +74,20 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
         });
-
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+*/
+        bLoginSubmit = (Button) findViewById(R.id.loginSubmit);
+        bLoginSubmit.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                login();
             }
         });
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
-    }
+        loginPresenter = new LoginPresenterImpl(this);
+        loginPresenter.setProgressBarVisiblity(View.INVISIBLE);
 
+    }
+/*
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
             return;
@@ -103,6 +95,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         getLoaderManager().initLoader(0, null, this);
     }
+
 
     private boolean mayRequestContacts() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
@@ -126,9 +119,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         return false;
     }
 
-    /**
-     * Callback received when a permissions request has been completed.
-     */
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -139,17 +130,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-
+    */
     /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-    private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
+    private void login() {
+        loginPresenter.setProgressBarVisiblity(View.VISIBLE);
+        bLoginSubmit.setEnabled(false);
 
+        loginPresenter.login(etUsername.getText().toString(), etPassword.getText().toString());
+
+/*
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
@@ -190,6 +183,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
         }
+        */
     }
 
     private boolean isEmailValid(String email) {
@@ -202,9 +196,32 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         return password.length() > 4;
     }
 
-    /**
-     * Shows the progress UI and hides the login form.
-     */
+    @Override
+    public void onReset() {
+        etUsername.setText("");
+        etPassword.setText("");
+    }
+
+    @Override
+    public void onLoginResult(Boolean result, int code) {
+        loginPresenter.setProgressBarVisiblity(View.INVISIBLE);
+        bLoginSubmit.setEnabled(true);
+
+        if (result)
+        {
+            Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this,"Login Fail, code = " + code,Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    @Override
+    public void onSetProgressBarVisibility(int visibility) {
+        pbProgress.setVisibility(visibility);
+    }
+
+    /*
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
@@ -292,10 +309,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         int IS_PRIMARY = 1;
     }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
+
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mEmail;
@@ -348,5 +362,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
         }
     }
+    */
 }
 

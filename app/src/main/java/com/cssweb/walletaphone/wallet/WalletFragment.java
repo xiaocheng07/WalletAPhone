@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cssweb.walletaphone.R;
+import com.cssweb.walletaphone.login.view.LoginActivity;
 import com.cssweb.walletaphone.nfc.test.NFCChangShaActivity;
 import com.cssweb.walletaphone.ui.gridview.AliPayGridView;
 import com.cssweb.walletaphone.ui.gridview.BaseViewHolder;
@@ -165,12 +166,20 @@ public class WalletFragment extends Fragment {
             GridViewItem gvItem = gvItems.get(i);
             Log.d(LOG_TAG, "item id=" + gvItem.getId());
 
-            if (gvItem.getId() == 0)
+            switch (gvItem.getId())
             {
-
-                Intent intent = new Intent(getActivity(), NFCChangShaActivity.class);
-                startActivity(intent);
+                case 0:
+                    Intent intentNFC = new Intent(getActivity(), NFCChangShaActivity.class);
+                    startActivity(intentNFC);
+                    break;
+                case 1:
+                    Intent intentLogin = new Intent(getActivity(), LoginActivity.class);
+                    startActivity(intentLogin);
+                    break;
+                default:
+                    break;
             }
+
 
         }
     }

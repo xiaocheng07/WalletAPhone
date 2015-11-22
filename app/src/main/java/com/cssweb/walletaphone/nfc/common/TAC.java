@@ -1,4 +1,4 @@
-package com.cssweb.walletaphone.security;
+package com.cssweb.walletaphone.nfc.common;
 
 /**
  * Created by chenh on 2015/11/14.
