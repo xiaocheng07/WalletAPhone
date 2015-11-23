@@ -1,7 +1,7 @@
 package com.cssweb.walletaphone.nfc.common;
 
 
-import org.apache.commons.codec.binary.Hex;
+
 
 import javax.crypto.*;
 import javax.crypto.spec.DESedeKeySpec;
@@ -148,19 +148,19 @@ public class DESede {
     {
 
         String key = "1234567812345678";
-        System.out.println("测试工具用编码key=" + Hex.encodeHexString(key.getBytes())); // 输出结果输入测试工具
+        System.out.println("测试工具用编码key=" + HEX.ByteArrayToHexString(key.getBytes())); // 输出结果输入测试工具
 
         String data = "ABCDEFGH";
-        System.out.println("测试工具用编码data=" + Hex.encodeHexString(data.getBytes()));// 输出结果输入测试工具
+        System.out.println("测试工具用编码data=" + HEX.ByteArrayToHexString(data.getBytes()));// 输出结果输入测试工具
 
 
 
         byte[] encryptData = DESede.encrypt(key.getBytes(), data.getBytes());
         System.out.println("加密结果长度= " + encryptData.length);
 
-        System.out.println("加密结果= " + Hex.encodeHexString(encryptData).toUpperCase());
+        System.out.println("加密结果= " + HEX.ByteArrayToHexString(encryptData).toUpperCase());
 
         byte[] decryptData = DESede.decrypt(key.getBytes(), encryptData);
-        System.out.println("解密结果= " + Hex.encodeHexString(decryptData).toUpperCase());
+        System.out.println("解密结果= " + HEX.ByteArrayToHexString(decryptData).toUpperCase());
     }
 }

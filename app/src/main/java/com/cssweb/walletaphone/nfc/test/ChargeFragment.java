@@ -14,4 +14,9 @@ public class ChargeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.nfcchangsha_charge_fragment, container, false);
     }
+
+    public void initCharge()
+    {
+
+    }
 }

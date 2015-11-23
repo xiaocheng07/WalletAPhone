@@ -1,7 +1,7 @@
 package com.cssweb.walletaphone.nfc.common;
 
 
-import org.apache.commons.codec.binary.Hex;
+
 
 import javax.crypto.*;
 import javax.crypto.spec.DESKeySpec;
@@ -140,19 +140,19 @@ public class DES {
     public static void main(String[] args)
     {
         String key = "12345678";
-        System.out.println("key测试工具用编码=" + Hex.encodeHexString(key.getBytes()));//16进制输出，输入测试工具
+        System.out.println("key测试工具用编码=" + HEX.ByteArrayToHexString(key.getBytes()));//16进制输出，输入测试工具
 
         String data = "ABCDEFGH";
-        System.out.println("data测试工具用编码=" + Hex.encodeHexString(data.getBytes()));//16进制输出，输入测试工具
+        System.out.println("data测试工具用编码=" + HEX.ByteArrayToHexString(data.getBytes()));//16进制输出，输入测试工具
 
 
 
         byte[] encryptData = DES.encrypt(key.getBytes(), data.getBytes());
         System.out.println("加密结果长度= " + encryptData.length);
 
-        System.out.println("加密结果= " + Hex.encodeHexString(encryptData).toUpperCase());
+        System.out.println("加密结果= " + HEX.ByteArrayToHexString(encryptData).toUpperCase());
 
         byte[] decryptData = DES.decrypt(key.getBytes(), encryptData);
-        System.out.println("解密结果= " + Hex.encodeHexString(decryptData).toUpperCase());
+        System.out.println("解密结果= " + HEX.ByteArrayToHexString(decryptData).toUpperCase());
     }
 }

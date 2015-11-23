@@ -63,8 +63,8 @@ public class WalletFragment extends Fragment {
     private void initGridView()
     {
         gvItems.add(new GridViewItem(0, "NFC",R.drawable.app_transfer));
-        gvItems.add(new GridViewItem(1, "余额宝",R.drawable.app_fund));
-        gvItems.add(new GridViewItem(2, "手机充值",R.drawable.app_phonecharge));
+        gvItems.add(new GridViewItem(1, "MVP",R.drawable.app_fund));
+        gvItems.add(new GridViewItem(2, "settings",R.drawable.app_phonecharge));
         gvItems.add(new GridViewItem(3, "信用卡还款",R.drawable.app_creditcard));
         gvItems.add(new GridViewItem(4, "淘宝电影",R.drawable.app_movie));
         gvItems.add(new GridViewItem(5, "彩票",R.drawable.app_lottery));

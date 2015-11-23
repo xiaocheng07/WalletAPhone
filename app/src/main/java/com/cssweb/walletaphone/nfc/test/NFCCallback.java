@@ -22,6 +22,8 @@ import android.nfc.tech.IsoDep;
 import android.util.Log;
 
 
+import com.cssweb.walletaphone.nfc.common.HEX;
+
 import java.io.IOException;
 
 import java.util.Arrays;
@@ -61,8 +63,8 @@ public class NFCCallback implements NfcAdapter.ReaderCallback {
 
 
                 String LC = "09";
-                byte[] command = HexStringToByteArray(INS_SELECT + LC + AID);
-                Log.i(TAG, "请求: " + ByteArrayToHexString(command));
+                byte[] command = HEX.HexStringToByteArray(INS_SELECT + LC + AID);
+                Log.i(TAG, "请求: " + HEX.ByteArrayToHexString(command));
 
                 byte[] result = isoDep.transceive(command);
 
@@ -74,7 +76,7 @@ public class NFCCallback implements NfcAdapter.ReaderCallback {
 
                 if (Arrays.equals(SW_SUCCESS, statusWord)) {
 
-                    String tmp = ByteArrayToHexString(result);
+                    String tmp = HEX.ByteArrayToHexString(result);
                     Log.i(TAG, "响应：" + tmp);
                 }
             } catch (IOException e) {
@@ -85,28 +87,5 @@ public class NFCCallback implements NfcAdapter.ReaderCallback {
 
 
 
-
-    public static String ByteArrayToHexString(byte[] bytes) {
-        final char[] hexArray = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
-        char[] hexChars = new char[bytes.length * 2];
-        int v;
-        for ( int j = 0; j < bytes.length; j++ ) {
-            v = bytes[j] & 0xFF;
-            hexChars[j * 2] = hexArray[v >>> 4];
-            hexChars[j * 2 + 1] = hexArray[v & 0x0F];
-        }
-        return new String(hexChars);
-    }
-
-
-    public static byte[] HexStringToByteArray(String s) {
-        int len = s.length();
-        byte[] data = new byte[len / 2];
-        for (int i = 0; i < len; i += 2) {
-            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
-                    + Character.digit(s.charAt(i+1), 16));
-        }
-        return data;
-    }
 
 }

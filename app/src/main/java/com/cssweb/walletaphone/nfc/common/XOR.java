@@ -1,6 +1,6 @@
 package com.cssweb.walletaphone.nfc.common;
 
-import org.apache.commons.codec.binary.Hex;
+
 
 /**
  * Created by chenhf on 2014/11/18.
@@ -41,14 +41,14 @@ public class XOR {
     public static void main(String args[])
     {
         String src1 = "12345678";
-        System.out.println("src1输入测试工具=" + Hex.encodeHexString(src1.getBytes())); //16进制输出，输入测试工具
+        System.out.println("src1输入测试工具=" + HEX.ByteArrayToHexString(src1.getBytes())); //16进制输出，输入测试工具
 
         String src2 = "ABCDEFGH";
-        System.out.println("src2输入测试工具=" + Hex.encodeHexString(src2.getBytes()));//16进制输出，输入测试工具
+        System.out.println("src2输入测试工具=" + HEX.ByteArrayToHexString(src2.getBytes()));//16进制输出，输入测试工具
 
         byte[] result = XOR.bytesXOR(src1.getBytes(), src2.getBytes());
         System.out.println("异或结果长度=" + result.length);
 
-        System.out.println("xor = " + Hex.encodeHexString(result));
+        System.out.println("xor = " + HEX.ByteArrayToHexString(result));
     }
 }

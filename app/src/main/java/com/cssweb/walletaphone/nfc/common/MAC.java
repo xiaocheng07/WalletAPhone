@@ -1,6 +1,6 @@
 package com.cssweb.walletaphone.nfc.common;
 
-import org.apache.commons.codec.binary.Hex;
+
 
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -235,7 +235,7 @@ public class MAC {
 
         // left 4 bytes
         byte[] mac = new byte[4];
-        System.out.println("3des output=" + Hex.encodeHexString(output).toUpperCase());
+        System.out.println("3des output=" + HEX.ByteArrayToHexString(output).toUpperCase());
         System.arraycopy(output, 0, mac, 0, 4);
         return mac;
     }
@@ -243,17 +243,17 @@ public class MAC {
     public static void main(String[] args) throws NoSuchProviderException, NoSuchAlgorithmException {
 
         String key = "12345678";
-        System.out.println("key测试工具用编码=" + Hex.encodeHexString(key.getBytes()));//16进制输出，输入测试工具
+        System.out.println("key测试工具用编码=" + HEX.ByteArrayToHexString(key.getBytes()));//16进制输出，输入测试工具
 
         String data = "ABCDEFGH";
-        System.out.println("data测试工具用编码=" + Hex.encodeHexString(data.getBytes()));//16进制输出，输入测试工具
+        System.out.println("data测试工具用编码=" + HEX.ByteArrayToHexString(data.getBytes()));//16进制输出，输入测试工具
 
 
         // 使用银联算法
         byte[] mac = MAC.calcMAC(key.getBytes(), data.getBytes());
         System.out.println("mac长度=" + mac.length);
 
-        System.out.println("mac=" + Hex.encodeHexString(mac).toUpperCase());
+        System.out.println("mac=" + HEX.ByteArrayToHexString(mac).toUpperCase());
 
         byte[] iv = new byte[8];
         /*
@@ -264,13 +264,13 @@ public class MAC {
         */
 
         byte[] mac1 = MAC.calcMAC1(key.getBytes(), iv, data.getBytes());
-        System.out.println("mac1=" + Hex.encodeHexString(mac1).toUpperCase());
+        System.out.println("mac1=" + HEX.ByteArrayToHexString(mac1).toUpperCase());
 
         String key2 = "1234567812345678";
-        System.out.println("输入密钥=" + Hex.encodeHexString(key2.getBytes()));
+        System.out.println("输入密钥=" + HEX.ByteArrayToHexString(key2.getBytes()));
         byte[] iv2 = new byte[8];
         byte[] mac2 = MAC.calcMAC1_3DES(key2.getBytes(), iv2, data.getBytes());
-        System.out.println("3mac = " + Hex.encodeHexString(mac2).toUpperCase());
+        System.out.println("3mac = " + HEX.ByteArrayToHexString(mac2).toUpperCase());
 
     }
 }

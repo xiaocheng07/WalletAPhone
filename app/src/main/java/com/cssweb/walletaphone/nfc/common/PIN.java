@@ -1,6 +1,6 @@
 package com.cssweb.walletaphone.nfc.common;
 
-import org.apache.commons.codec.binary.Hex;
+
 
 /**
  * Created by chenhf on 2014/11/10.
@@ -93,7 +93,7 @@ public class PIN {
             System.out.print("xor[" + i + "]=" + byte2Hex(xor[i]) + ",");
         }
         System.out.println();
-        System.out.println("异或结果输入测试工具=" + Hex.encodeHexString(xor));
+        System.out.println("异或结果输入测试工具=" + HEX.ByteArrayToHexString(xor));
 
 
         byte[] encryptPIN = DESede.encrypt(PIK, xor);
@@ -119,12 +119,12 @@ public class PIN {
     public static void main(String args[])
     {
         String PIK = "1234567812345678"; //采用双倍密钥算法，所以密钥长度必须是16字节
-        System.out.println("测试工具用编码key=" + Hex.encodeHexString(PIK.getBytes()));
+        System.out.println("测试工具用编码key=" + HEX.ByteArrayToHexString(PIK.getBytes()));
 
         String pin = "123456";
         String pan = "123456789012345678";
 
         byte[] result = PIN.calcPIN(PIK.getBytes(), pin, pan);
-        System.out.println("加密pin=" + Hex.encodeHexString(result).toUpperCase());
+        System.out.println("加密pin=" + HEX.ByteArrayToHexString(result).toUpperCase());
     }
 }

@@ -16,12 +16,18 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.cssweb.walletaphone.R;
+import com.cssweb.walletaphone.nfc.common.HEX;
+import com.cssweb.walletaphone.nfc.common.MAC;
+
 
 public class CardInfoFragment extends Fragment {
     private static final String LOG_TAG = "CardInfoFragment";
+
     public static int READER_FLAGS = NfcAdapter.FLAG_READER_NFC_A | NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK;
     NFCCallback nfcCallback;
+
     Button btnGetBalance;
+    Button btnMAC1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -33,6 +39,23 @@ public class CardInfoFragment extends Fragment {
             public void onClick(View view) {
                 Log.d(LOG_TAG, "==========================onClick=========================");
                 Snackbar.make(view, "onClick", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            }
+        });
+
+        btnMAC1 = (Button) view.findViewById(R.id.btnMAC1);
+        btnMAC1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String key = "12345678";
+                Log.d(LOG_TAG, "key测试工具用编码=" + HEX.ByteArrayToHexString(key.getBytes()));//16进制输出，输入测试工具
+
+                String data = "ABCDEFGH";
+                Log.d(LOG_TAG, "data测试工具用编码=" + HEX.ByteArrayToHexString(data.getBytes()));//16进制输出，输入测试工具
+
+                byte[] iv = new byte[8];
+                byte[] mac1 = MAC.calcMAC1(key.getBytes(), iv, data.getBytes());
+                Log.d(LOG_TAG, "mac1=" + HEX.ByteArrayToHexString(mac1).toUpperCase());
+
             }
         });
 
