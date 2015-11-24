@@ -3,7 +3,7 @@ package com.cssweb.walletaphone.nfc.common;
 /**
  * Created by chenh on 2015/11/18.
  */
-public class Util {
+public class INT {
 
     public static byte[] balance = new byte[4];
 

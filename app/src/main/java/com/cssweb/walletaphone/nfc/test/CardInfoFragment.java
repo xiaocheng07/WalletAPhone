@@ -111,4 +111,33 @@ public class CardInfoFragment extends Fragment {
         enableReaderMode();
     }
 
+    public void getBalance()
+    {
+        byte[] header = {};
+    }
+
+
+
+    public void readPublicInfo()
+    {
+
+    }
+
+    public void readPersonalInfo()
+    {
+
+    }
+    public void readPurchaseLog()
+    {
+
+    }
+    public void readChargeLog()
+    {
+
+    }
+    public void readCAPPPurchaseRecord()
+    {
+
+    }
+
 }
