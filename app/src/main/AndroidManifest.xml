@@ -14,11 +14,12 @@
     <uses-permission android:name="android.permission.NFC" />
     <!-- 权限设置 -->
 
-    <!--硬件要求-->
+
+    <!-- 硬件要求 -->
     <uses-feature
         android:name="android.hardware.nfc"
         android:required="true" />
-    <!--硬件要求-->
+    <!-- 硬件要求 -->
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="org.simalliance.openmobileapi.SMARTCARD" />
@@ -73,7 +74,7 @@
         <activity
             android:name=".nfc.test.NFCChangShaActivity"
             android:label="长沙卡测试"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".login.view.LoginActivity"
             android:label="@string/title_activity_login" />
@@ -121,12 +122,19 @@
             android:label="@string/title_activity_test_applet" />
         <activity
             android:name=".settings.SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
-        <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-             App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+            android:label="@string/title_activity_settings" />
+        <!--
+             ATTENTION: This was auto-generated to add Google Play services to your project for
+             App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name=".ui.toolbar.ToolbarActivity"
+            android:label="@string/title_activity_toolbar"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

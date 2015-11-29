@@ -22,6 +22,7 @@ import com.cssweb.walletaphone.login.view.LoginActivity;
 import com.cssweb.walletaphone.nfc.test.NFCChangShaActivity;
 import com.cssweb.walletaphone.ui.gridview.AliPayGridView;
 import com.cssweb.walletaphone.ui.gridview.BaseViewHolder;
+import com.cssweb.walletaphone.ui.toolbar.ToolbarActivity;
 import com.cssweb.walletaphone.webview.WebviewActivity;
 
 import java.util.ArrayList;
@@ -67,8 +68,8 @@ public class WalletFragment extends Fragment {
         gvItems.add(new GridViewItem(1, "MVP",R.drawable.app_fund));
         gvItems.add(new GridViewItem(2, "webview",R.drawable.app_phonecharge));
         gvItems.add(new GridViewItem(3, "mvvm",R.drawable.app_creditcard));
-        gvItems.add(new GridViewItem(4, "淘宝电影",R.drawable.app_movie));
-        gvItems.add(new GridViewItem(5, "彩票",R.drawable.app_lottery));
+        gvItems.add(new GridViewItem(4, "toolbar",R.drawable.app_movie));
+        gvItems.add(new GridViewItem(5, "recyclerview",R.drawable.app_lottery));
         gvItems.add(new GridViewItem(6, "当面付",R.drawable.app_facepay));
         gvItems.add(new GridViewItem(7, "亲密付",R.drawable.app_close));
         gvItems.add(new GridViewItem(8, "机票",R.drawable.app_plane));
@@ -180,6 +181,11 @@ public class WalletFragment extends Fragment {
                 case 2:
                     Intent intentWebview = new Intent(getActivity(), WebviewActivity.class);
                     startActivity(intentWebview);
+                    break;
+                case 4:
+                    Intent intentToolbar = new Intent(getActivity(), ToolbarActivity.class);
+                    startActivity(intentToolbar);
+                case 5:
                     break;
                 default:
                     break;

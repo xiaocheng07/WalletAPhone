@@ -1,5 +1,8 @@
 package com.cssweb.walletaphone.nfc.common;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+
 /**
  * Created by chenh on 2015/11/14.
  */
@@ -20,5 +23,23 @@ public class TAC {
         byte[] sessionKey = XOR.bytesXOR(left, right);
 
         return MAC.calcMAC1(sessionKey, iv, src);
+    }
+
+    public static void main(String[] args) throws NoSuchProviderException, NoSuchAlgorithmException {
+
+        String key = "1234567812345678";
+        System.out.println("key测试工具用编码=" + HEX.ByteArrayToHexString(key.getBytes()));//16进制输出，输入测试工具
+
+        String data = "ABCDEFGH";
+        System.out.println("data测试工具用编码=" + HEX.ByteArrayToHexString(data.getBytes()));//16进制输出，输入测试工具
+
+
+        byte[] iv = new byte[8];
+
+        byte[] tac = TAC.calcTAC(key.getBytes(), iv, data.getBytes());
+        System.out.println("tac=" + HEX.ByteArrayToHexString(tac).toUpperCase());
+
+
+
     }
 }
