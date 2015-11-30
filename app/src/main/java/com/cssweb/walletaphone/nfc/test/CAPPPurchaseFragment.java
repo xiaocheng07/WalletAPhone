@@ -30,9 +30,9 @@ public class CAPPPurchaseFragment extends Fragment {
         byte[] apdu = new byte[16];
 
         System.arraycopy(header, 0, apdu, 0, header.length);
-        apdu[5] = common.keyIndex;
+        apdu[5] = TestData.keyIndex;
         System.arraycopy(m, 0, apdu, 6, m.length);
-        System.arraycopy(common.terminalId, 0, apdu, 10, common.terminalId.length);
+        System.arraycopy(TestData.test_terminalId, 0, apdu, 10, TestData.test_terminalId.length);
 
         String cmd = HEX.ByteArrayToHexString(apdu);
         Log.d(LOG_TAG, cmd);
@@ -53,9 +53,9 @@ public class CAPPPurchaseFragment extends Fragment {
         byte[] apdu = new byte[20];
 
         System.arraycopy(header, 0, apdu, 0, header.length);
-        byte[] pid = INT.toBytes(common.purchaseId);
+        byte[] pid = INT.toBytes(TestData.purchaseId);
         System.arraycopy(pid, 0, apdu, 5, pid.length);
-        System.arraycopy(common.datetime, 0, apdu, 9, common.datetime.length);
+        System.arraycopy(TestData.test_datetime, 0, apdu, 9, TestData.test_datetime.length);
         System.arraycopy(mac1, 0, apdu, 16, mac1.length);
     }
 }

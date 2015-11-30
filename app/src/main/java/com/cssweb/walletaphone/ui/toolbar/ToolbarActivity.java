@@ -42,6 +42,9 @@ public class ToolbarActivity extends AppCompatActivity {
         adapter = new RecyclerAdapter(this);
         recyclerView.setAdapter(adapter);
 
+        //下位刷新，上拉加载
+        //https://github.com/jianghejie/XRecyclerView
+
 /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

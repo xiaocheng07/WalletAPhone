@@ -35,7 +35,7 @@ public class PurchaseFragment extends Fragment {
         byte[] apdu = new byte[16];
         System.arraycopy(header, 0, apdu, 0, header.length);
         System.arraycopy(m, 0, apdu, 5, m.length);
-        System.arraycopy(common.terminalId, 0, apdu, 9, common.terminalId.length);
+        System.arraycopy(TestData.test_terminalId, 0, apdu, 9, TestData.test_terminalId.length);
 
         String cmd = HEX.ByteArrayToHexString(apdu);
         Log.d(LOG_TAG, cmd);
@@ -54,7 +54,7 @@ public class PurchaseFragment extends Fragment {
 
         System.arraycopy(header, 0, apdu, 0, header.length);
         System.arraycopy(pid, 0, apdu, 5, pid.length);
-        System.arraycopy(common.datetime, 0, apdu, 9, common.datetime.length);
+        System.arraycopy(TestData.test_datetime, 0, apdu, 9, TestData.test_datetime.length);
         System.arraycopy(mac1, 0, apdu, 16, mac1.length);
 
     }
