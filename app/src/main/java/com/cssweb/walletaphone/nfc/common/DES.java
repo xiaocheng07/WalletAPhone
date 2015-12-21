@@ -139,20 +139,22 @@ public class DES {
 
     public static void main(String[] args)
     {
-        String key = "12345678";
-        System.out.println("key测试工具用编码=" + HEX.ByteArrayToHexString(key.getBytes()));//16进制输出，输入测试工具
+       // String key = "12345678";
+      //  System.out.println("key测试工具用编码=" + HEX.ByteArrayToHexString(key.getBytes()));//16进制输出，输入测试工具
 
-        String data = "ABCDEFGH";
-        System.out.println("data测试工具用编码=" + HEX.ByteArrayToHexString(data.getBytes()));//16进制输出，输入测试工具
+       // String data = "ABCDEFGH";
+      //  System.out.println("data测试工具用编码=" + HEX.ByteArrayToHexString(data.getBytes()));//16进制输出，输入测试工具
 
 
 
-        byte[] encryptData = DES.encrypt(key.getBytes(), data.getBytes());
+        byte[] key = {0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38};
+        byte[] data = {0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48};
+        byte[] encryptData = DES.encrypt(key, data);
         System.out.println("加密结果长度= " + encryptData.length);
 
         System.out.println("加密结果= " + HEX.ByteArrayToHexString(encryptData).toUpperCase());
 
-        byte[] decryptData = DES.decrypt(key.getBytes(), encryptData);
-        System.out.println("解密结果= " + HEX.ByteArrayToHexString(decryptData).toUpperCase());
+        //byte[] decryptData = DES.decrypt(key.getBytes(), encryptData);
+      //  System.out.println("解密结果= " + HEX.ByteArrayToHexString(decryptData).toUpperCase());
     }
 }

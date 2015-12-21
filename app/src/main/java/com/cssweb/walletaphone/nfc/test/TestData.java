@@ -1,6 +1,7 @@
 package com.cssweb.walletaphone.nfc.test;
 
 import com.cssweb.walletaphone.nfc.common.DES;
+import com.cssweb.walletaphone.nfc.common.DESede;
 import com.cssweb.walletaphone.nfc.common.HEX;
 import com.cssweb.walletaphone.nfc.common.INT;
 import com.cssweb.walletaphone.nfc.common.MAC;
@@ -26,13 +27,14 @@ public class TestData {
     {
         byte[] temp = new byte[512];
         byte[] chargeTradeId = {0x00, 0x00};
+
         System.arraycopy(test_data_random, (short) 0, temp, (short) 0, (short) 4);
         System.arraycopy(chargeTradeId, (short) 0, temp, (short) 4, (short) 2);
 
         byte[] data = Padding.padding(temp, (short)6);
 
-        byte[] CHARGE_KEY =   {0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38};
-        chargeSessionKey = DES.encrypt(CHARGE_KEY, data);
+        byte[] CHARGE_KEY =   {0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38};
+        chargeSessionKey = DESede.encrypt(CHARGE_KEY, data);
 
         System.out.println("充值过程密钥" + HEX.ByteArrayToHexString(chargeSessionKey));
     }
@@ -49,43 +51,89 @@ public class TestData {
         System.arraycopy(test_terminalId, 0, temp, 5, 6);
         System.arraycopy(test_datetime, 0, temp, 11, 7);
 
-        byte[] data = Padding.padding(temp, (short)18);
+       // byte[] data = Padding.padding(temp, (short)18);
 
         byte[] iv = new byte[8];
-        byte[] mac2 = MAC.calcMAC1(chargeSessionKey, iv, data);
+        byte[] k = new byte[8];
+        System.arraycopy(chargeSessionKey, 0, k, 0, 8);
+        byte[] mac2 = MAC.calcMAC1(k, iv, temp);
         System.out.println("mac2=" + HEX.ByteArrayToHexString(mac2));
     }
 
     public void purchase()
     {
         byte[] temp = new byte[8];
-
         byte[] purchaseTradeId = {0x00, 0x00};
+        byte[] ternimalTradeId = {0x00, 0x00, 0x00, 0x01};
+        byte[] PURCHASE_KEY =   {0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38};
+
         System.arraycopy(test_data_random, (short) 0, temp, (short) 0, (short) 4);
         System.arraycopy(purchaseTradeId, (short) 0, temp, (short) 4, (short) 2);
-        byte[] ternimalTradeId = {0x00, 0x00, 0x00, 0x01};
+
         System.arraycopy(ternimalTradeId, 2, temp, 6, 2);
 
-        byte[] PURCHASE_KEY =   {0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38};
 
         byte[] data = Padding.padding(temp, (short)8);
-        purchaseSessionKey = DES.encrypt(PURCHASE_KEY, data);
+        purchaseSessionKey = DESede.encrypt(PURCHASE_KEY, data);
         System.out.println("消费过程密钥" + HEX.ByteArrayToHexString(purchaseSessionKey));
 
 
         byte[] temp2 = new byte[18];
+        //普通消费交易
         byte[] money = {0x00, 0x00, 0x00, 0x04};
+        //初始化复合消费交易
+        //byte[] money = {0x00, 0x00, 0x00, 0x00};
+
         System.arraycopy(money, 0, temp2, 0, 4);
         final byte TRADE_TYPE_PURCHASE = (byte)0x06;
         temp2[4] = TRADE_TYPE_PURCHASE;
         System.arraycopy(test_terminalId, 0, temp2, 5, 6);
         System.arraycopy(test_datetime, (short) 0, temp2, (short) 11, (short) 7);
 
-        byte[] data2 = Padding.padding(temp2, (short)18);
+       // byte[] data2 = Padding.padding(temp2, (short)18);
 
         byte[] iv = new byte[8];
-        byte[] mac1 = MAC.calcMAC1(purchaseSessionKey, iv, data2);
+        byte[] mac1 = MAC.calcMAC1(purchaseSessionKey, iv, temp2);
         System.out.println("mac1=" + HEX.ByteArrayToHexString(mac1));
+    }
+
+    public void cappPurchase()
+    {
+        byte[] temp = new byte[8];
+        byte[] purchaseTradeId = {0x00, 0x01};
+        byte[] ternimalTradeId = {0x00, 0x00, 0x00, 0x01};
+        byte[] PURCHASE_KEY =   {0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38};
+
+        System.arraycopy(test_data_random, (short) 0, temp, (short) 0, (short) 4);
+        System.arraycopy(purchaseTradeId, (short) 0, temp, (short) 4, (short) 2);
+
+        System.arraycopy(ternimalTradeId, 2, temp, 6, 2);
+
+
+        byte[] data = Padding.padding(temp, (short)8);
+        purchaseSessionKey = DESede.encrypt(PURCHASE_KEY, data);
+        System.out.println("复合消费过程密钥" + HEX.ByteArrayToHexString(purchaseSessionKey));
+
+
+        byte[] temp2 = new byte[18];
+        //begin
+        //byte[] money = {0x00, 0x00, 0x00, 0x00};
+
+        //end
+        byte[] money = {0x00, 0x00, 0x00, 0x04};
+
+
+        System.arraycopy(money, 0, temp2, 0, 4);
+        final byte TRADE_TYPE_CAPP_PURCHASE = (byte)0x09;
+        temp2[4] = TRADE_TYPE_CAPP_PURCHASE;
+        System.arraycopy(test_terminalId, 0, temp2, 5, 6);
+        System.arraycopy(test_datetime, (short) 0, temp2, (short) 11, (short) 7);
+
+        //byte[] data2 = Padding.padding(temp2, (short)18);
+
+        byte[] iv = new byte[8];
+        byte[] mac1 = MAC.calcMAC1(purchaseSessionKey, iv, temp2);
+        System.out.println("复合消费交易mac1=" + HEX.ByteArrayToHexString(mac1));
     }
 
     public static void main(String[] args)
@@ -94,6 +142,7 @@ public class TestData {
         test.chargeInit();
         test.charge();
         test.purchase();
+        test.cappPurchase();
     }
 
 }

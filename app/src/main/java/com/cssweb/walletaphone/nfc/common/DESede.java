@@ -20,6 +20,7 @@ public class DESede {
 
     private static final  String KEY_ALGORITHM = "DESede";
     private static final  String CIPHER_ALGORITHM = "DESede/ECB/NoPadding";
+    //private static final  String CIPHER_ALGORITHM = "DESede/CBC/NoPadding";
 
 
     /**
@@ -146,21 +147,22 @@ public class DESede {
 
     public static void main(String[] args)
     {
+//31323334353637383132333435363738
+        byte[] key = {(byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF};
 
-        String key = "1234567812345678";
-        System.out.println("测试工具用编码key=" + HEX.ByteArrayToHexString(key.getBytes())); // 输出结果输入测试工具
-
-        String data = "ABCDEFGH";
-        System.out.println("测试工具用编码data=" + HEX.ByteArrayToHexString(data.getBytes()));// 输出结果输入测试工具
-
+        //System.out.println("测试工具用编码key=" + HEX.ByteArrayToHexString(key.getBytes())); // 输出结果输入测试工具
+//41424344454647488000000000000000
+        byte[] data = {0x41, 0x42, 0x43, 0x44, 0x00, 0x00, 0x00, 0x00};
+        //System.out.println("测试工具用编码data=" + HEX.ByteArrayToHexString(data.getBytes()));// 输出结果输入测试工具
 
 
-        byte[] encryptData = DESede.encrypt(key.getBytes(), data.getBytes());
+
+        byte[] encryptData = DESede.encrypt(key, data);
         System.out.println("加密结果长度= " + encryptData.length);
 
         System.out.println("加密结果= " + HEX.ByteArrayToHexString(encryptData).toUpperCase());
 
-        byte[] decryptData = DESede.decrypt(key.getBytes(), encryptData);
+        byte[] decryptData = DESede.decrypt(key, encryptData);
         System.out.println("解密结果= " + HEX.ByteArrayToHexString(decryptData).toUpperCase());
     }
 }
