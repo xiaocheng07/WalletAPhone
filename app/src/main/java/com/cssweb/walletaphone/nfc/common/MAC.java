@@ -150,8 +150,8 @@ public class MAC {
         System.arraycopy(src, 0, data, 0, src.length);
         System.arraycopy(add, 0, data, src.length, addLen);
 
-        System.out.println("iv=" + HEX.ByteArrayToHexString(iv));
-        System.out.println("data=" + HEX.ByteArrayToHexString(data));
+        //System.out.println("iv=" + HEX.ByteArrayToHexString(iv));
+        System.out.println("calcMAC1 data=" + HEX.ByteArrayToHexString(data));
 
 
         int pos = 0;
@@ -185,7 +185,7 @@ public class MAC {
 
             // left 4 bytes
             byte[] mac = new byte[4];
-            System.out.println("3des output=" + HEX.ByteArrayToHexString(result).toUpperCase());
+            System.out.println("calcMAC1 3des output=" + HEX.ByteArrayToHexString(result).toUpperCase());
             System.arraycopy(result, 0, mac, 0, 4);
             return mac;
         }
@@ -199,7 +199,7 @@ public class MAC {
 
 
     public static void main(String[] args) throws NoSuchProviderException, NoSuchAlgorithmException {
-
+/*
         String key = "12345678";
         System.out.println("key测试工具用编码=" + HEX.ByteArrayToHexString(key.getBytes()));//16进制输出，输入测试工具
 
@@ -213,25 +213,67 @@ public class MAC {
 
         System.out.println("mac=" + HEX.ByteArrayToHexString(mac).toUpperCase());
 
-        byte[] iv = new byte[8];
-        /*
-        for (int i=0; i<iv.length; i++)
-        {
-            iv[i] = (byte)0x00;
-        }
-        */
+
+
 
         byte[] mac1 = MAC.calcMAC1(key.getBytes(), iv, data.getBytes());
         System.out.println("mac1=" + HEX.ByteArrayToHexString(mac1).toUpperCase());
 
         String key2 = "1234567812345678";
         System.out.println("输入密钥=" + HEX.ByteArrayToHexString(key2.getBytes()));
+*/
+        //byte[] transKey ={(byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff};
+        byte[] transKey ={0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38};
+        byte[] cardControl = {0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38};
+        byte[] cardManager = {0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38};
+
+        byte[] purchase = {0x37,(byte)0xC1,0x7E,(byte)0xFA,0x48,(byte)0xC5,(byte)0xC5,0x13,0x48,(byte)0x9E,0x5E,(byte)0xB6,(byte)0xC7,(byte)0xAF,(byte)0x93,(byte)0x9A};
+        byte[] charge = {0x20,0x6A,0x7A,(byte)0xEA,(byte)0xDA,0x34,(byte)0xD7,(byte)0xD3,(byte)0x96,(byte)0xED,0x51,0x66,(byte)0xBE,(byte)0x85,(byte)0x86,0x08};
+        byte[] tac = {(byte)0xB5,0x2A,(byte)0x9E,(byte)0xFB,(byte)0xE0,0x6C,(byte)0xC2,(byte)0xCA,0x4E,(byte)0xD5,0x31,0x20,0x5B,(byte)0xDF,0x5A,(byte)0xC9};
+        /*
+        byte[] appControl = {EBEC8FCAFF6F91ACD3938011A1536854};
+        byte[] appManager = {EBEC8FCAFF6F91ACD3938011A1536854};
+        byte[] fileManager1 = {AE4E2A2D035E159D57E02E5483DC3F68};
+        byte[] fileManager2 = {687F19B93825C00731A66205A9660CC4};
+        byte[] cappManager = {37C17EFA48C5C513489E5EB6C7AF939A};
+        byte[] pinUnLock = {20C30BCEB1B078DCB8259D4C71692D72};
+        byte[] pinReload = {B0717DDF79E7FA67C4B73A2BD6FB1E89};
+
+        byte[] appLock = {394EE8DB60A2D1359029E4EFE956FB41};
+        byte[] appUnLock = {(byte)0xC3,(byte)0xF4,0x33,0x5E,0x76,0x52,0x0F,(byte)0x8B,(byte)0xBB,0x01,(byte)0x8F,0x6B,0x1A,(byte)0xCE,0x48,(byte)0xA6};
+*/
+        byte[] keyData = new byte[24];
+        keyData[0] = 0x14;
+        keyData[1] = 0x01;
+        keyData[2] = 0x00;
+        keyData[3] = 0x33;
+        keyData[4] = 0x00;
+        System.arraycopy(cardControl, 0, keyData, 5, 16);
+        keyData[21] = (byte)0x80;
+        keyData[22] = 0x00;
+        keyData[23] = 0x00;
 
 
-        byte[] iv2 = {(byte)0xFC, (byte)0xF3, 0x04, 0x77, 0x00, 0x00, 0x00, 0x00};
-        byte[] k ={0x78,(byte)0xBB,(byte)0xDF,(byte)0xD3,(byte)0xCE,(byte)0xCA,0x48,(byte)0xFD,0x7B,(byte)0xD5,(byte)0xF6,(byte)0xAE,0x69,(byte)0x88,0x2C,0x60};
-        byte[] d = {0x04, (byte)0xDC, 0x07, (byte)0xBC, 0x1C, 0x11, 0x16, 0x01, 0x00, 0x20, 0x15, 0x08, 0x27, 0x17, 0x24, 0x23, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-        byte[] mac2 = MAC.calcMAC1(k, iv2, d);
+        byte[] keyCipher = DESede.encrypt(transKey, keyData);
+        System.out.println("加密结果= " + HEX.ByteArrayToHexString(keyCipher).toUpperCase());
+
+        byte[] iv = {(byte)0x41, (byte)0x42, 0x43, 0x44, 0x00, 0x00, 0x00, 0x00};
+
+
+        byte[] macData = new byte[29];
+        macData[0] = (byte)0x84;
+        macData[1] = (byte)0xD4;
+        //macData[2] = (byte)0x39; //密钥类型
+        macData[2] = (byte)0x36; //密钥类型
+        macData[3] = (byte)0x00; //密钥索引
+        macData[4] = (byte)0x1C; //
+        System.arraycopy(keyCipher, 0, macData, 5, keyCipher.length);
+
+
+        String file05 = "04D685002C07314100000000004100000099999432020020150605000F00000001000120150605203808080000";
+        byte[] data05 = HEX.HexStringToByteArray(file05);
+
+        byte[] mac2 = MAC.calcMAC1(transKey, iv, data05);
         System.out.println("3mac = " + HEX.ByteArrayToHexString(mac2).toUpperCase());
 
     }
