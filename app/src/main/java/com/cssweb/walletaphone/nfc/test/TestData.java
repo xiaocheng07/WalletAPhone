@@ -12,13 +12,36 @@ import com.cssweb.walletaphone.nfc.common.Util;
  * Created by chenh on 2015/11/24.
  */
 public class TestData {
+    String card_no = "4100000099999432";
+
+    String transKey = "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF";
+
+    String cardControl = "31323334353637383132333435363738";
+    String cardManage = "58B860693E4F13DD11EE471349E2F1DC";
+
+    String appControl = "EBEC8FCAFF6F91ACD3938011A1536854";
+    String appManage = "8F9370265BE85FB3FB5A31AF8C9F0B5D";
+    String FileManage1 = "AE4E2A2D035E159D57E02E5483DC3F68";
+    String FileManage2 = "687F19B93825C00731A66205A9660CC4";
+
+    String cappManage = "37C17EFA48C5C513489E5EB6C7AF939A";
+
+    String pinUnblock = "20C30BCEB1B078DCB8259D4C71692D72";
+    String pinReload = "B0717DDF79E7FA67C4B73A2BD6FB1E89";
+
+    String purchase1 = "37C17EFA48C5C513489E5EB6C7AF939A";
+    String load1 = "206A7AEADA34D7D396ED5166BE858608";
+    String tac = "B52A9EFBE06CC2CA4ED531205BDF5AC9";
+
+    String applockkey = "394EE8DB60A2D1359029E4EFE956FB41";
+    String appprelockkey = "C3F4335E76520F8BBB018F6B1ACE48A6";
 
     public static int purchaseId = 1;
     public static byte keyIndex = 0x00;
-
-    public static byte[] test_terminalId = {0x31, 0x32, 0x33, 0x34, 0x35, 0x36};
-    public static byte[] test_datetime = {0x14, 0x0f, 0x0b, 0x18, 0x0a, 0x0a, 0x0a};
     public static final byte[] test_data_random = {0x41, 0x42, 0x43, 0x44};
+    public static byte[] test_terminalId = {0x00, 0x00, 0x00, 0x00, 0x00, 0x01};
+    public static byte[] test_datetime = {0x20, 0x15, 0x11, 0x11, 0x08, 0x45, 0x00};
+
 
     public byte[] chargeSessionKey;
     public byte[] purchaseSessionKey;
@@ -26,14 +49,14 @@ public class TestData {
     public void chargeInit()
     {
         byte[] temp = new byte[512];
-        byte[] chargeTradeId = {0x00, 0x00};
+        byte[] chargeTradeId = {0x00, 0x01};
 
         System.arraycopy(test_data_random, (short) 0, temp, (short) 0, (short) 4);
         System.arraycopy(chargeTradeId, (short) 0, temp, (short) 4, (short) 2);
 
         byte[] data = Padding.padding(temp, (short)6);
 
-        byte[] CHARGE_KEY =   {0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38};
+        byte[] CHARGE_KEY =   HEX.HexStringToByteArray(load1);
         chargeSessionKey = DESede.encrypt(CHARGE_KEY, data);
 
         System.out.println("充值过程密钥" + HEX.ByteArrayToHexString(chargeSessionKey));
@@ -63,9 +86,9 @@ public class TestData {
     public void purchase()
     {
         byte[] temp = new byte[8];
-        byte[] purchaseTradeId = {0x00, 0x00};
+        byte[] purchaseTradeId = {0x00, 0x01};
         byte[] ternimalTradeId = {0x00, 0x00, 0x00, 0x01};
-        byte[] PURCHASE_KEY =   {0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38};
+        byte[] PURCHASE_KEY =   HEX.HexStringToByteArray(purchase1);
 
         System.arraycopy(test_data_random, (short) 0, temp, (short) 0, (short) 4);
         System.arraycopy(purchaseTradeId, (short) 0, temp, (short) 4, (short) 2);
@@ -78,7 +101,7 @@ public class TestData {
         System.out.println("消费过程密钥" + HEX.ByteArrayToHexString(purchaseSessionKey));
 
 
-        byte[] temp2 = new byte[18];
+        byte[] temp2 = new byte[27];
         //普通消费交易
         byte[] money = {0x00, 0x00, 0x00, 0x04};
         //初始化复合消费交易
@@ -90,7 +113,9 @@ public class TestData {
         System.arraycopy(test_terminalId, 0, temp2, 5, 6);
         System.arraycopy(test_datetime, (short) 0, temp2, (short) 11, (short) 7);
 
-       // byte[] data2 = Padding.padding(temp2, (short)18);
+        byte[] uid = {(byte)0x85, (byte)0x88, (byte)0xD3, (byte)0x2B, (byte)0x76, (byte)0x88, (byte)0xD3, (byte)0x2B, (byte)0x76};
+
+        System.arraycopy(uid, (short) 0, temp2, (short) 18, (short) uid.length);
 
         byte[] iv = new byte[8];
         byte[] mac1 = MAC.calcMAC1(purchaseSessionKey, iv, temp2);
@@ -102,7 +127,7 @@ public class TestData {
         byte[] temp = new byte[8];
         byte[] purchaseTradeId = {0x00, 0x01};
         byte[] ternimalTradeId = {0x00, 0x00, 0x00, 0x01};
-        byte[] PURCHASE_KEY =   {0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38};
+        byte[] PURCHASE_KEY =   HEX.HexStringToByteArray(purchase1);
 
         System.arraycopy(test_data_random, (short) 0, temp, (short) 0, (short) 4);
         System.arraycopy(purchaseTradeId, (short) 0, temp, (short) 4, (short) 2);
@@ -140,29 +165,7 @@ public class TestData {
 
     public void genAPDU()
     {
-        String card_no = "4100000099999432";
 
-        String transKey = "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF";
-
-        String cardControl = "31323334353637383132333435363738";
-        String cardManage = "58B860693E4F13DD11EE471349E2F1DC";
-
-        String appControl = "EBEC8FCAFF6F91ACD3938011A1536854";
-        String appManage = "8F9370265BE85FB3FB5A31AF8C9F0B5D";
-        String FileManage1 = "AE4E2A2D035E159D57E02E5483DC3F68";
-        String FileManage2 = "687F19B93825C00731A66205A9660CC4";
-
-        String cappManage = "37C17EFA48C5C513489E5EB6C7AF939A";
-
-        String pinUnblock = "20C30BCEB1B078DCB8259D4C71692D72";
-        String pinReload = "B0717DDF79E7FA67C4B73A2BD6FB1E89";
-
-        String purchase1 = "37C17EFA48C5C513489E5EB6C7AF939A";
-        String load1 = "206A7AEADA34D7D396ED5166BE858608";
-        String tac = "B52A9EFBE06CC2CA4ED531205BDF5AC9";
-
-        String applock = "394EE8DB60A2D1359029E4EFE956FB41";
-        String appprelock = "C3F4335E76520F8BBB018F6B1ACE48A6";
 
         byte[] iv = {(byte)0x41, (byte)0x42, 0x43, 0x44, 0x00, 0x00, 0x00, 0x00};
         byte[] mac = null;
@@ -296,7 +299,7 @@ public class TestData {
         mac = MAC.calcMAC1(key, iv, macData);
         System.out.println("tac mac = " + HEX.ByteArrayToHexString(mac).toUpperCase() + "\n");
 
-        keyData = "1401003300"+ applock + "800000";
+        keyData = "1401003300"+ applockkey + "800000";
         key = HEX.HexStringToByteArray(appControl);
         keyCipher = DESede.encrypt(key, HEX.HexStringToByteArray(keyData));
         data = "84D4" + "3300" + "1C" + HEX.ByteArrayToHexString(keyCipher);
@@ -307,7 +310,7 @@ public class TestData {
         System.out.println("applock mac = " + HEX.ByteArrayToHexString(mac).toUpperCase() + "\n");
 
 
-        keyData = "1401003300"+ appprelock + "800000";
+        keyData = "1401003300"+ appprelockkey + "800000";
         key = HEX.HexStringToByteArray(appControl);
         keyCipher = DESede.encrypt(key, HEX.HexStringToByteArray(keyData));
         data = "84D4" + "3400" + "1C" + HEX.ByteArrayToHexString(keyCipher);
@@ -360,19 +363,39 @@ public class TestData {
         key = HEX.HexStringToByteArray(FileManage2);
         mac = MAC.calcMAC1(key, iv, macData);
         System.out.println("sfi17 mac = " + HEX.ByteArrayToHexString(mac).toUpperCase() + "\n");
+
+        String appblock = "841E000004";
+        appblock = appblock.replace(" ", "");
+        System.out.println("appblock = " + appblock);
+        macData = HEX.HexStringToByteArray(appblock);
+        key = HEX.HexStringToByteArray(applockkey);
+        mac = MAC.calcMAC1(key, iv, macData);
+        System.out.println("appblock mac = " + HEX.ByteArrayToHexString(mac).toUpperCase() + "\n");
+
+        String appunblock = "8418 0000 04";
+        appunblock = appunblock.replace(" ", "");
+        System.out.println("appunblock = " + appunblock);
+        macData = HEX.HexStringToByteArray(appunblock);
+        key = HEX.HexStringToByteArray(appprelockkey);
+        mac = MAC.calcMAC1(key, iv, macData);
+        System.out.println("appunblock mac = " + HEX.ByteArrayToHexString(mac).toUpperCase() + "\n");
     }
 
     public static void main(String[] args)
     {
         TestData test = new TestData();
-        test.genAPDU();
 
-        /*
+       test.genAPDU();
+
+/*
         test.chargeInit();
         test.charge();
+
         test.purchase();
+
         test.cappPurchase();
         */
+
     }
 
 }
